@@ -96,6 +96,7 @@
       ? 'pipe ' + addr
       : 'port ' + addr.port;
     debug('Listening on ' + bind);
+    console.log(`Listening to requests on http://localhost:${port}`);
   }
 
 })();
