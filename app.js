@@ -1,13 +1,11 @@
-//const users = require('./routes/users')
 const passport = require('passport');
 const session = require('express-session');
 const MongoStore = require('connect-mongo')(session);
-
-var createError = require('http-errors');
-var express = require('express');
-var path = require('path');
-var cookieParser = require('cookie-parser');
-var logger = require('morgan');
+const createError = require('http-errors');
+const express = require('express');
+const path = require('path');
+const cookieParser = require('cookie-parser');
+const logger = require('morgan');
 
 global.authenticationMiddleware = () => {  
   return function (req, res, next) {
@@ -21,7 +19,7 @@ global.authenticationMiddleware = () => {
 var indexRouter = require('./routes/index');
 var accountRouter = require('./routes/account');
 var loginRouter = require('./routes/login');
-var uploadRouter = require("./routes/upload");
+var uploadRouter = require('./routes/upload');
 
 var app = express();
 
@@ -54,7 +52,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use('/', loginRouter);
 app.use('/index', indexRouter);
 app.use('/account', accountRouter);
-app.use('/upload', uploadRouter);
+app.use('/photo', uploadRouter);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

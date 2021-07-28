@@ -3,10 +3,10 @@ const multer = require("multer");
 const {GridFsStorage} = require("multer-gridfs-storage");
 
 var storage = new GridFsStorage({
-  url: "mongodb://localhost:27017/TCC_2021",
+  url: process.env.MONGO_CONNECTION,
   options: { useNewUrlParser: true, useUnifiedTopology: true },
   file: (req, file) => {
-    const match = ["image/png", "image/jpeg"];
+    const match = ["image/CR2", "image/RAW"];
 
     if (match.indexOf(file.mimetype) === -1) {
       const filename = `${Date.now()}-astrophoto-${file.originalname}`;
@@ -14,13 +14,12 @@ var storage = new GridFsStorage({
     }
 
     return {
-      bucketName: "photos",
+      bucketName: "fs",
       filename: `${Date.now()}-astrophoto-${file.originalname}`
     };
   }
 });
 
-// var uploadFile = multer({ storage: storage }).single("file");
 var uploadFiles = multer({ storage: storage }).array("multi-files", 10);
 var uploadFilesMiddleware = util.promisify(uploadFiles);
 module.exports = uploadFilesMiddleware;

@@ -1,0 +1,13 @@
+.drop-area {
+    border: 2px dashed #bbb;
+    border-radius: 5px;
+    padding: 25px;
+    text-align: center;
+    color: #bbb;
+    margin: 20px;
+  }
+  
+.thumbnail {
+   max-width: 100%;
+}
+  

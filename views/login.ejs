@@ -1,23 +1,45 @@
 <!doctype html>
 <html>
-  <body>
-    <h1>Login</h1>
-    <form action="/login" method="POST">
-      <input name="username" type="text" /><br />
-      <input name="password" type="password" /><br />
-      <input type="submit" value="Login" />
-    </form>
-    <% if(message) { %>
-      <p>
+
+<head>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Quicksand:100,300,500">
+  <link rel="stylesheet" href="../stylesheets/login.css">
+  <title>Log In</title>
+</head>
+
+<body>
+  <div class="full-screen-container">
+    <div class="login-container">
+      <h3 class="login-title">Welcome</h3>
+      <form action="/login" method="POST">
+        <div class="input-group">
+          <label>Username</label>
+          <input type="text" id="username" name="username" required>
+        </div>
+        <div class="input-group">
+          <label>Password</label>
+          <input type="password" id="password" name="password" required>
+        </div>
+        <button type="submit" class="login-button">Sign In</button>
+      </form>
+      <% if(message) { %>
+        <p>
           <% if(error) { %>
-            <label style="color:Red"><%= message %></label>
-          <%} else {%>
-            <label style="color:Green"><%= message %></label>
-          <%}%>
-      </p>
-    <%}%>
-    <p>
-      <a href="/account/forgot">Esqueceu sua senha?</a> | <a href="/account/signup">Não possui cadastro?</a>
-    </p>
-  </body>
+            <label style="color:Red">
+              <%= message %>
+            </label>
+            <%} else {%>
+              <label style="color:Green">
+                <%= message %>
+              </label>
+              <%}%>
+        </p>
+        <%}%>
+          <p>
+            <a href="/account/forgot">Esqueceu sua senha?</a> | <a href="/account/signup">Não possui cadastro?</a>
+          </p>
+    </div>
+  </div>
+</body>
+
 </html>

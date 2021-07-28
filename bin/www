@@ -12,7 +12,7 @@
 
   try {
     const conn = await mongoClient.connect(process.env.MONGO_CONNECTION);
-    console.log("conectou no banco de dados!");
+    console.log("MongoDB connected!");
     global.db = conn.db(process.env.MONGO_DB);
   } catch (err) {
     return console.log(err);
