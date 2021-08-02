@@ -2,8 +2,9 @@ var express = require('express');
 var router = express.Router();
 const upload = require("../config-upload");
 
-/* GET home page. */
-router.get('/', function(req, res, next) {
+
+/* GET upload page. */
+router.get('/', global.authenticationMiddleware(), function(req, res, next) {
   res.render('upload', { title: 'Upload' });
 });
 

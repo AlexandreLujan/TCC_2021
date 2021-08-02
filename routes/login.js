@@ -3,12 +3,12 @@ var passport = require('passport');
 var express = require('express');
 var router = express.Router();
 
-/* GET home page. */
+/* GET login page. */
 router.get('/', function(req, res, next) {
   res.render('login', { title: 'Login', message: null });
 });
 
-router.get('/login', function(req, res){
+router.get('/access', function(req, res){
   if(req.query.fail)
     res.render('login', { message: 'Usuário e/ou senha incorretos!', error: true });
   else if(req.query.reset)
@@ -17,8 +17,8 @@ router.get('/login', function(req, res){
     res.render('login', { message: null });
 });
 
-router.post('/login',
-  passport.authenticate('local', { successRedirect: '/index', failureRedirect: '/login?fail=true' })
+router.post('/access',
+  passport.authenticate('local', { successRedirect: '/account', failureRedirect: '/login?fail=true' })
 );
 
 router.post('/logoff', function(req, res, next){

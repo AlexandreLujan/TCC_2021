@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Quicksand:100,300,500">
+    <script src="https://cdn.jsdelivr.net/npm/dcraw"></script>
+    <script type="text/javascript" src="../javascripts/rawPreview.js"></script>
+    <title>Upload</title>
+</head>
+
+<body>
+    <div class="container">
+        <div class="row" id="list">
+            <% if(files){ %>
+                <% files.forEach(function(file){ %>
+                    <div class="col-sm card card-body m-3  col-md-2">
+                        <% if(file.isImage){ %>
+                            
+                            <img src="image/<%= file.filename %>" />
+                            <% } else { %>
+                                <a href="download/<%= file.filename %>">
+                                    <%= file.filename %>
+                                </a>
+                                <%}%>
+                                    <form action="/files/<%= file._id%>?_method=DELETE" method="POST">
+                                        <button class="btn btn-danger btn-block mt-4">Delete</button>
+                                    </form>
+                    </div>
+                    <% }) %>
+                        <% }else { %>
+                            <p class="card card-body text-center display-4 my-4">file does not exist</p>
+                            <% } %>
+        </div>
+    </div>
+</body>
+
+</html>

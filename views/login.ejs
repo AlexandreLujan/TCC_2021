@@ -1,45 +1,65 @@
 <!doctype html>
-<html>
+<html lang="en" dir="ltr">
 
-<head>
-  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Quicksand:100,300,500">
-  <link rel="stylesheet" href="../stylesheets/login.css">
-  <title>Log In</title>
-</head>
+  <head>
+    <meta charset="utf-8">
+    <link rel="stylesheet" href="../stylesheets/login.css">
+    <title>Log In</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  </head>
 
-<body>
-  <div class="full-screen-container">
-    <div class="login-container">
-      <h3 class="login-title">Welcome</h3>
-      <form action="/login" method="POST">
-        <div class="input-group">
-          <label>Username</label>
-          <input type="text" id="username" name="username" required>
+  <body>
+  
+    <nav>
+      <div class="menu">
+        <div class="logo">
+          <a href="/">Brand</a>
         </div>
-        <div class="input-group">
-          <label>Password</label>
-          <input type="password" id="password" name="password" required>
-        </div>
-        <button type="submit" class="login-button">Sign In</button>
-      </form>
-      <% if(message) { %>
-        <p>
-          <% if(error) { %>
-            <label style="color:Red">
-              <%= message %>
-            </label>
-            <%} else {%>
-              <label style="color:Green">
+        <ul>
+          <li><a href="/login">Log In</a></li>
+          <li><a href="/users">Sign Up</a></li>
+          <li><a href="#">About</a></li>
+          <li><a href="#">FAQ</a></li>
+          <li><a href="#">Feedback</a></li>
+        </ul>
+      </div>
+    </nav>
+  
+    <div class="full-screen-container">
+      <div class="login-container">
+        <h3 class="login-title">Welcome Back!</h3>
+        <form action="/login/access" method="POST">
+          <div class="input-group">
+            <label>Username</label>
+            <input type="text" id="username" name="username" required>
+          </div>
+          <div class="input-group">
+            <label>Password</label>
+            <input type="password" id="password" name="password" required>
+          </div>
+          <button type="submit" class="login-button">Sign In</button>
+        </form>
+        <% if(message) { %>
+          <p>
+            <% if(error) { %>
+              <label style="color:Red">
                 <%= message %>
               </label>
-              <%}%>
-        </p>
+              <%} else {%>
+                <label style="color:Green">
+                  <%= message %>
+                </label>
+                <%}%>
+          </p>
         <%}%>
           <p>
-            <a href="/account/forgot">Esqueceu sua senha?</a> | <a href="/account/signup">Não possui cadastro?</a>
+            <a href="#" style="color:aliceblue">Forgot password?</a> 
+            <a style="color:aliceblue"> | </a> 
+            <a href="/users" style="color:aliceblue">New here? Sign Up!</a>
           </p>
+      </div>
     </div>
-  </div>
-</body>
+
+  </body>
 
 </html>

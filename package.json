@@ -7,6 +7,8 @@
   },
   "dependencies": {
     "bcryptjs": "^2.4.3",
+    "buffer": "^5.7.1",
+    "child_process": "^1.0.2",
     "connect-mongo": "^3.2.0",
     "cookie-parser": "~1.4.4",
     "dcraw": "^1.0.3",
@@ -24,6 +26,7 @@
     "multer-gridfs-storage": "^5.0.0",
     "passport": "^0.4.1",
     "passport-local": "^1.0.0",
+    "python-shell": "^3.0.0",
     "util": "^0.12.4",
     "uuid": "^8.3.2"
   }

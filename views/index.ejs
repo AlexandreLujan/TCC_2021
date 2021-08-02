@@ -1,22 +1,37 @@
 <!DOCTYPE html>
-<html>
-  <head>
-    <title><%= title %></title>
-    <link rel='stylesheet' href='/stylesheets/style.css' />
-  </head>
-  <body>
-    <h1><%= title %></h1>
-    <p>Welcome to <%= title %></p>
-    <p>
-      <a href="/photo">Upload</a>
-    </p>
-    <p>
-      <a href="/load">Repository</a>
-    </p>
-    <p>
-      <form action="/logoff" method="POST">
-        <input type="submit" value="Logoff" />
-      </form>
-    </p>
-  </body>
+<html lang="en" dir="ltr">
+
+<head>
+    <meta charset="utf-8">
+    <link rel="stylesheet" href="../stylesheets/index.css">
+    <title>Home</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+</head>
+
+<body>
+    <nav>
+        <div class="menu">
+            <div class="logo">
+                <a href="/">Brand</a>
+            </div>
+            <ul>
+                <li><a href="/login">Log In</a></li>
+                <li><a href="/users">Sign Up</a></li>
+                <li><a href="#">About</a></li>
+                <li><a href="#">FAQ</a></li>
+                <li><a href="#">Feedback</a></li>
+            </ul>
+        </div>
+    </nav>
+    <div class="img"></div>
+    <div class="center">
+        <div class="title">The Modern Platform for the Astrophotographer.</div>
+        <div class="sub_title">Process your astronomical photographs quickly and easily.</div>
+        <div class="btns">
+            <button onclick="location.href='#'">Learn More</button>
+            <button onclick="location.href='/users'">Sign Up</button>
+        </div>
+    </div>
+</body>
+
 </html>

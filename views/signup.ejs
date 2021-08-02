@@ -1,17 +1,59 @@
 <!doctype html>
-<html>
+<html lang="en" dir="ltr">
+
+  <head>
+    <meta charset="utf-8">
+    <link rel="stylesheet" href="../stylesheets/register.css">
+    <title>Sign Up</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  </head>
+
   <body>
-    <h1>Signup</h1>
-    <form action="/users/signup" method="POST">
-      Username: <input name="username" type="text" /><br />
-      Password: <input name="password" type="password" /><br />
-      E-mail: <input name="email" type="text" /><br />
-      <input type="submit" value="Save" />
-    </form>
-    <% if(message) { %>
-      <p>
-        <label style="color:Red"><%= message %></label>
-      </p>
-    <%}%>
+
+    <nav>
+      <div class="menu">
+        <div class="logo">
+          <a href="/">Brand</a>
+        </div>
+        <ul>
+          <li><a href="/login">Log In</a></li>
+          <li><a href="/users">Sign Up</a></li>
+          <li><a href="#">About</a></li>
+          <li><a href="#">FAQ</a></li>
+          <li><a href="#">Feedback</a></li>
+        </ul>
+      </div>
+    </nav>
+
+    <div class="full-screen-container">
+      <div class="register-container">
+        <h3 class="register-title">Create Account</h3>
+        <form action="/users/signup" method="POST">
+          <div class="input-group">
+            <label>Username</label>
+            <input type="text" id="username" name="username" required>
+          </div>
+          <div class="input-group">
+            <label>E-Mail</label>
+            <input type="text" id="email" name="email" required>
+          </div>
+          <div class="input-group">
+            <label>Password</label>
+            <input type="password" id="password" name="password" required>
+          </div>
+          <button type="submit" class="register-button">Sign Up</button>
+        </form>
+        <% if(message) { %>
+          <p>
+            <label style="color:Red"><%= message %></label>
+          </p>
+        <%}%>
+          <p>
+            <a href="/login" style="color:aliceblue">Already have an account? Log In!</a>
+          </p>
+      </div>
+    </div>
+
   </body>
+
 </html>

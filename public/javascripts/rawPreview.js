@@ -21,7 +21,9 @@ function handleFileSelect(evt) {
                 var metadata = dcraw(buf, { verbose: true, identify: true }).split('\n').filter(String);
 
                 // Create the display elements
-                var id = btoa(o.name).replace(/=/g, '');
+                //var id = btoa(o.name).replace(/=/g, '');
+                var id = window.btoa(encodeURIComponent(o.name).replace(/=/g, ''));
+                //var id = Buffer.from(o.name, 'base64').replace(/=/g, '');
                 var elem = `
                     <div class="mdl-cell mdl-cell--4-col mdl-card mdl-shadow--2dp">
                         <div class="mdl-card__title mdl-card--expand">

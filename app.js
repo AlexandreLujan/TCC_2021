@@ -17,9 +17,12 @@ global.authenticationMiddleware = () => {
 };
 
 var indexRouter = require('./routes/index');
-var accountRouter = require('./routes/account');
 var loginRouter = require('./routes/login');
+var usersRouter = require('./routes/users');
+var accRouter = require('./routes/account')
 var uploadRouter = require('./routes/upload');
+var reposRouter = require('./routes/repository');
+var procRouter = require('./routes/process');
 
 var app = express();
 
@@ -49,10 +52,13 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
-app.use('/', loginRouter);
-app.use('/index', indexRouter);
-app.use('/account', accountRouter);
+app.use('/', indexRouter);
+app.use('/login', loginRouter);
+app.use('/users', usersRouter);
+app.use('/account', accRouter);
 app.use('/photo', uploadRouter);
+app.use('/load', reposRouter);
+app.use('/exec', procRouter);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
