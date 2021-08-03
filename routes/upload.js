@@ -5,10 +5,10 @@ const upload = require("../config-upload");
 
 /* GET upload page. */
 router.get('/', global.authenticationMiddleware(), function(req, res, next) {
-  res.render('upload', { title: 'Upload' });
+  res.render('upload', { title: req.user.username });
 });
 
-router.post('/upload', async (req, res) => {
+router.post('/photo', async (req, res) => {
     console.log('x');
     try {
         await upload(req, res);
@@ -18,7 +18,8 @@ router.post('/upload', async (req, res) => {
           return res.send(`You must select at least 1 file.`);
         }
     
-        return res.send(`Files have been uploaded.`);
+        //return res.send(`Files have been uploaded.`);
+        res.redirect('/repository');
     } catch (error) {
         console.log(error);
     

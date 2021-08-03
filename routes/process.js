@@ -9,7 +9,7 @@ router.get('/', global.authenticationMiddleware(), function(req, res, next) {
     res.render('process', { title: 'Process' });
 });
 
-router.post('/process', function(req, res, next) {
+router.post('/process', global.authenticationMiddleware(), function(req, res, next) {
     //Here are the option object in which arguments can be passed for the python_test.js.
     let options = {
         mode: 'text',

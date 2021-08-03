@@ -1,23 +1,122 @@
-<!doctype html>
-<html>
+<!DOCTYPE html>
 
+<html lang="en" dir="ltr">
   <head>
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Quicksand:100,300,500">
+    <meta charset="UTF-8">
+    <title><%= title %></title>
     <link rel="stylesheet" href="../stylesheets/upload.css">
-    <script src="https://cdn.jsdelivr.net/npm/dcraw"></script>
-    <script  type="text/javascript" src="../javascripts/rawPreview.js" defer></script>
-    <title>Upload</title>
-  </head>
+    <link href='https://unpkg.com/boxicons@2.0.7/css/boxicons.min.css' rel='stylesheet'>
+     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+   </head>
+<body>
+  <div class="sidebar close">
+    <div class="logo-details">
+      <i class='bx bxl-c-plus-plus'></i>
+      <span class="logo_name">CodingLab</span>
+    </div>
+    <ul class="nav-links">
+      <li>
+        <a href="/account">
+          <i class='bx bx-grid-alt' ></i>
+          <span class="link_name">Dashboard</span>
+        </a>
+        <ul class="sub-menu blank">
+          <li><a class="link_name" href="/account">Dashboard</a></li>
+        </ul>
+      </li>
+      <li>
+        <div class="iocn-link">
+          <a href="#">
+            <i class='bx bx-folder' ></i>
+            <span class="link_name">Repository</span>
+          </a>
+          <i class='bx bxs-chevron-down arrow' ></i>
+        </div>
+        <ul class="sub-menu">
+          <li><a class="link_name" href="#">Repository</a></li>
+          <li><a href="#">Processed</a></li>
+          <li><a href="/repository">Unprocessed</a></li>
+        </ul>
+      </li>
+      <li>
+        <div class="iocn-link">
+          <a href="#">
+            <i class='bx bx-play-circle'></i>
+            <span class="link_name">Process</span>
+          </a>
+          <i class='bx bxs-chevron-down arrow' ></i>
+        </div>
+        <ul class="sub-menu">
+          <li><a class="link_name" href="#">Process</a></li>
+          <li><a href="/process">Automatic</a></li>
+          <li><a href="#">Step by Step</a></li>
+        </ul>
+      </li>
+      <li>
+        <a href="/upload">
+          <i class='bx bx-cloud-upload'></i>
+          <span class="link_name">Upload Photos</span>
+        </a>
+        <ul class="sub-menu blank">
+          <li><a class="link_name" href="/upload">Upload Photos</a></li>
+        </ul>
+      </li>
+      <li>
+        <div class="iocn-link">
+          <a href="#">
+            <i class='bx bx-wrench' ></i>
+            <span class="link_name">Tools</span>
+          </a>
+          <i class='bx bxs-chevron-down arrow' ></i>
+        </div>
+        <ul class="sub-menu">
+          <li><a class="link_name" href="#">Tools</a></li>
+          <li><a href="#">Stacking</a></li>
+          <li><a href="#">Fix Pixels</a></li>
+          <li><a href="#">Edit Colors</a></li>
+        </ul>
+      </li>
+      <li>
+        <a href="#">
+          <i class='bx bxs-user-account' ></i>
+          <span class="link_name">Account</span>
+        </a>
+        <ul class="sub-menu blank">
+          <li><a class="link_name" href="#">Account</a></li>
+        </ul>
+      </li>
+    <li>
+    <div class="profile-details">
+      <div class="profile-content">
+        <img src="" alt="">
+      </div>
+      <div class="name-job">
+        <div class="profile_name"><%= title %></div>
+        <div class="job">User</div>
+      </div>
+      <i class='bx bx-log-out' ></i>
+    </div>
+  </li>
+</ul>
+  </div>
+  <section class="home-section">
+    <div class="home-content">
+      <i class='bx bx-menu' ></i>
+      <span class="text">Upload</span>
+    </div>
+    <p>
+      <div class="drop-area" id="drop">
+        <h5>Drop RAW files here</h5>
+        <form class="mt-4" action="/upload/photo" method="POST" enctype="multipart/form-data">
+          <input type="file" name="multi-files" multiple id="files" class="form-control-file border"/>
+          <button type="submit" class="btn btn-primary">Submit</button>
+        </form>
+      </div> 
+      <div id="list" class="mdl-grid"></div>
+    </p>
+  </section>
 
-  <body>
-    <div class="drop-area" id="drop">
-      <h5>Drop RAW files here</h5>
-      <form class="mt-4" action="/photo/upload" method="POST" enctype="multipart/form-data">
-        <input type="file" name="multi-files" multiple id="files" class="form-control-file border"/>
-        <button type="submit" class="btn btn-primary">Submit</button>
-      </form>
-    </div> 
-    <div id="list" class="mdl-grid"></div>
-  </body>
+  <script src="../javascripts/left_bar.js"></script>
 
+</body>
 </html>

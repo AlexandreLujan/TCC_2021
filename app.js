@@ -6,6 +6,7 @@ const express = require('express');
 const path = require('path');
 const cookieParser = require('cookie-parser');
 const logger = require('morgan');
+const methodOverride = require('method-override')
 
 global.authenticationMiddleware = () => {  
   return function (req, res, next) {
@@ -19,10 +20,12 @@ global.authenticationMiddleware = () => {
 var indexRouter = require('./routes/index');
 var loginRouter = require('./routes/login');
 var usersRouter = require('./routes/users');
-var accRouter = require('./routes/account')
+var accRouter = require('./routes/account');
 var uploadRouter = require('./routes/upload');
 var reposRouter = require('./routes/repository');
 var procRouter = require('./routes/process');
+var faqRouter = require('./routes/faq');
+var feedRouter = require('./routes/feedback');
 
 var app = express();
 
@@ -51,14 +54,17 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
+app.use(methodOverride('_method'))
 
 app.use('/', indexRouter);
 app.use('/login', loginRouter);
 app.use('/users', usersRouter);
 app.use('/account', accRouter);
-app.use('/photo', uploadRouter);
-app.use('/load', reposRouter);
-app.use('/exec', procRouter);
+app.use('/upload', uploadRouter);
+app.use('/repository', reposRouter);
+app.use('/process', procRouter);
+app.use('/faq', faqRouter);
+app.use('/feedback', feedRouter)
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

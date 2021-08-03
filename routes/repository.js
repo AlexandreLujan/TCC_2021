@@ -1,6 +1,6 @@
 const GridFsStream = require('gridfs-stream');
 const mongoose = require('mongoose');
-const dcraw = require('dcraw');
+//const dcraw = require('dcraw');
 
 var express = require('express');
 var router = express.Router();
@@ -18,10 +18,10 @@ connect.once('open', () => {
  //It will create upload.files (record file information) in our database upload.chunks (storage file chunks)
 })
 
-router.get('/', (req, res) => {
+router.get('/', global.authenticationMiddleware(), (req, res) => {
     gfs.files.find().toArray((err, files) => {
         if (!files || files.length === 0) {
-            res.render('repository', { files: false })
+            res.render('repository', { files: false, title: req.user.username })
             return
         }
         files.map(file => {
@@ -36,12 +36,12 @@ router.get('/', (req, res) => {
         })
         
         //dcraw(files, { verbose: true, identify: true });
-        res.render('repository', { files: files })
+        res.render('repository', { files: files, title: req.user.username })
         //res.render('repository', dcraw(files, { verbose: true, identify: true }))
     })
 })
 
-router.get('/download/:filename', (req, res) => {
+router.get('/download/:filename', global.authenticationMiddleware(), (req, res) => {
     gfs.files.findOne({ filename: req.params.filename }, (err, file) => {
         if (!file) {
             return res.status(404).json({
@@ -53,14 +53,14 @@ router.get('/download/:filename', (req, res) => {
     })
 })
 
-router.delete('/files/:id', (req, res) => {
-    gfs.remove({ _id: req.params.id, root: 'upload' }, (err) => {
+router.delete('/files/:id', global.authenticationMiddleware(), (req, res) => {
+    gfs.deleteMany({ _id: req.params.id, root: 'repository' }, (err) => {
         if (err) {
             return res.status(404).json({
  Err:'The deleted file does not exist! '
             })
         }
-        res.redirect('/')
+        res.redirect('/repository')
     })
 })
 

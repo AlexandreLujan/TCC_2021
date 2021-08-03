@@ -1,11 +1,10 @@
 <!DOCTYPE html>
-<!-- Designined by CodingLab | www.youtube.com/codinglabyt -->
+
 <html lang="en" dir="ltr">
   <head>
     <meta charset="UTF-8">
     <title> Drop Down Sidebar Menu | CodingLab </title>
     <link rel="stylesheet" href="../stylesheets/account.css">
-    <!-- Boxiocns CDN Link -->
     <link href='https://unpkg.com/boxicons@2.0.7/css/boxicons.min.css' rel='stylesheet'>
      <meta name="viewport" content="width=device-width, initial-scale=1.0">
    </head>
@@ -17,12 +16,12 @@
     </div>
     <ul class="nav-links">
       <li>
-        <a href="#">
+        <a href="/account">
           <i class='bx bx-grid-alt' ></i>
           <span class="link_name">Dashboard</span>
         </a>
         <ul class="sub-menu blank">
-          <li><a class="link_name" href="#">Category</a></li>
+          <li><a class="link_name" href="/account">Dashboard</a></li>
         </ul>
       </li>
       <li>
@@ -36,7 +35,7 @@
         <ul class="sub-menu">
           <li><a class="link_name" href="#">Repository</a></li>
           <li><a href="#">Processed</a></li>
-          <li><a href="#">Unprocessed</a></li>
+          <li><a href="/repository">Unprocessed</a></li>
         </ul>
       </li>
       <li>
@@ -49,17 +48,17 @@
         </div>
         <ul class="sub-menu">
           <li><a class="link_name" href="#">Process</a></li>
-          <li><a href="#">Automatic</a></li>
+          <li><a href="/process">Automatic</a></li>
           <li><a href="#">Step by Step</a></li>
         </ul>
       </li>
       <li>
-        <a href="#">
+        <a href="/upload">
           <i class='bx bx-cloud-upload'></i>
           <span class="link_name">Upload Photos</span>
         </a>
         <ul class="sub-menu blank">
-          <li><a class="link_name" href="#">Upload Photos</a></li>
+          <li><a class="link_name" href="/upload">Upload Photos</a></li>
         </ul>
       </li>
       <li>
@@ -86,14 +85,14 @@
           <li><a class="link_name" href="#">Account</a></li>
         </ul>
       </li>
-      <li>
+    <li>
     <div class="profile-details">
       <div class="profile-content">
         <img src="" alt="">
       </div>
       <div class="name-job">
         <div class="profile_name"><%= title %></div>
-        <div class="job">Web Desginer</div>
+        <div class="job">User</div>
       </div>
       <i class='bx bx-log-out' ></i>
     </div>
