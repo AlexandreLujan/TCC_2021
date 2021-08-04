@@ -64,7 +64,7 @@ nav .menu{
 
 
 .login-container {
-    background-color: hsla(201, 100%, 6%, 0.6);
+    background-color: hsla(210, 100%, 0%, 0.6);
     padding: 50px 30px;
     min-width: 400px;
     width: 50%;
@@ -113,7 +113,7 @@ nav .menu{
     width: 100%;
     border-radius: 5px; 
     background-color: hsla(201, 100%, 50%, 0.1);
-    border: 1px solid hsl(201, 100%, 50%);
+    border: 1px solid hsl(200, 42%, 87%);
     outline: none;
     font-size: 1.5em;
     color: white;

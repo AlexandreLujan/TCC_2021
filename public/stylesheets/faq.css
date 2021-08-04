@@ -7,6 +7,10 @@
   box-sizing: border-box;
   font-family: "Poppins" , sans-serif;
 }
+::selection{
+  color: #000;
+  background: #fff;
+}
 nav{
   position: fixed;
   background: #1b1b1b;
@@ -51,17 +55,15 @@ nav .menu{
   background: #fff;
   color: black;
 }
-body{
+.set{
   display: flex;
+  background: url('../images/image-2.jpeg')no-repeat;
+  background-size: cover;
+  background-position: center;
   align-items: center;
   justify-content: center;
   min-height: 100vh;
-  background: #7d2ae8;
   padding: 40px;
-}
-::selection{
-  background: #7d2ae8;
-  color: #fff;
 }
 .accordion{
   display: flex;
@@ -69,7 +71,7 @@ body{
   width: 100%;
   align-items: center;
   justify-content: space-between;
-  background: #fff;
+  background-color: rgba(0, 0, 0, 0);
   border-radius: 25px;
   padding: 45px 90px 45px 60px;
 }
@@ -88,7 +90,7 @@ body{
 .accordion .accordion-text .title{
   font-size: 35px;
   font-weight: 600;
-  color: #7d2ae8;
+  color: #ffffff;
   font-family: 'Fira Sans', sans-serif;
 }
 .accordion .accordion-text .faq-text{
@@ -111,12 +113,12 @@ body{
 .accordion-text li .question-arrow .question{
   font-size: 18px;
   font-weight: 500;
-  color: #595959;
+  color: #ffffff;
   transition: all 0.3s ease;
 }
 .accordion-text li .question-arrow .arrow{
   font-size: 20px;
-  color: #595959;
+  color: #ffffff;
   transition: all 0.3s ease;
 }
 .accordion-text li.showAnswer .question-arrow .arrow{
@@ -124,24 +126,24 @@ body{
 }
 .accordion-text li:hover .question-arrow .question,
 .accordion-text li:hover .question-arrow .arrow{
-  color: #7d2ae8;
+  color: #ffffff;
 }
 .accordion-text li.showAnswer .question-arrow .question,
 .accordion-text li.showAnswer .question-arrow .arrow{
-  color: #7d2ae8;
+  color: #ffffff;
 }
 .accordion-text li .line{
   display: block;
   height: 2px;
   width: 100%;
   margin: 10px 0;
-  background: rgba(0, 0, 0, 0.1);
+  background: rgba(255, 255, 255, 0.2);
 }
 .accordion-text li p{
   width: 92%;
   font-size: 15px;
   font-weight: 500;
-  color: #595959;
+  color: #ffffff;
   display: none;
 }
 .accordion-text li.showAnswer p{
@@ -171,7 +173,7 @@ body{
   .accordion .image-box{
     height: 360px;
     width: 300px;
-    background: #7d2ae8;
+    background: #ffffff;
     width: 100%;
     border-radius: 25px;
     padding: 30px;

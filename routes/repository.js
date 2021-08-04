@@ -7,7 +7,9 @@ var router = express.Router();
 
 const connect = mongoose.createConnection(process.env.MONGO_CONNECTION, {
     useNewUrlParser: true,
-    useUnifiedTopology: true
+    useUnifiedTopology: true,
+    useFindAndModify: false,
+    useCreateIndex: true
 })
 
 let gfs;
@@ -45,7 +47,7 @@ router.get('/download/:filename', global.authenticationMiddleware(), (req, res) 
     gfs.files.findOne({ filename: req.params.filename }, (err, file) => {
         if (!file) {
             return res.status(404).json({
- Err:'The file does not exist! '
+ Err:'The file does not exist!'
             })
         }
         const readstream = gfs.createReadStream(file.filename)
@@ -54,7 +56,7 @@ router.get('/download/:filename', global.authenticationMiddleware(), (req, res) 
 })
 
 router.delete('/files/:id', global.authenticationMiddleware(), (req, res) => {
-    gfs.deleteMany({ _id: req.params.id, root: 'repository' }, (err) => {
+    gfs.files.findByIdAndRemove({ _id: req.params.id, root: '' }, (err) => {
         if (err) {
             return res.status(404).json({
  Err:'The deleted file does not exist! '

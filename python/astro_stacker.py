@@ -1,3 +1,35 @@
+#!/usr/bin/env python3
+#source:  https://github.com/wkjarosz/astro-stacker
+"""astro_stacker
+
+A simple command line tool to average (optionally with homography alignment) a bunch of raw files.
+
+Usage:
+  astro_stacker.py [options] INFILES... 
+  astro_stacker.py -h | --help
+  astro_stacker.py --version
+
+Arguments:
+  INFILES                   image files to stack
+
+Options:
+  -h --help                 show this help message and exit
+  --version                 show version
+  --debug=LEVEL             set debug level [default: 0]
+  -a BOOL --align=BOOL      attempt to align the images using a homography [default: True]
+  -t THR --threshold=THR    align using images thresholded at the percentile [default: 0.85]
+  -c BOOL --cache=BOOL      cache the keypoints in the base frame [default: True]
+  -p PAD --padding=PAD      add black padding (in fraction of width,height) around the image [default: 0.0]
+  -m MASK --mask=MASK       filename of a mask frame (to generate alignment features only inside mask)
+  -r BOOL --raw=BOOL        don't demosaic. keep as raw Bayer mosaic [default: False]
+  -v BOOL --visible=BOOL    crop to the visible window [default: True]
+  -b BASE --base=BASE       filename of base frame
+  -d DARK --dark=DARK       filename of master dark frame
+  -f FLAT --flat=FLAT       filename of master flat frame
+  -o OUTFILE                set output path prefix (can include directory and filename prefix)
+
+"""
+from docopt import docopt
 import sys
 import cv2
 import numpy as np
@@ -7,19 +39,21 @@ from tqdm import tqdm, trange
 
 stabilized_average, divider_mask, imagenumbers, master_dark, master_flat, alignment_mask = None, None, None, None, None, None
 
-def load_master_dark_frame():
-    global master_dark
+args = docopt(__doc__, version='astro_stacker 0.1')
 
-    if str(sys.argv)['--dark']:
-        print("Reading master dark frame '{}'...".format(str(sys.argv)['--dark']))
-        master_dark = cv2.imread(str(sys.argv)['--dark'], cv2.IMREAD_UNCHANGED).astype(np.uint16)
+def load_master_dark_frame():
+    global args, master_dark
+
+    if args['--dark']:
+        print("Reading master dark frame '{}'...".format(args['--dark']))
+        master_dark = cv2.imread(args['--dark'], cv2.IMREAD_UNCHANGED).astype(np.uint16)
 
 def load_master_flat_frame():
-    global master_flat
+    global args, master_flat
 
-    if str(sys.argv)['--flat']:
-        print("Reading master flat frame '{}'...".format(str(sys.argv)['--flat']))
-        master_flat = cv2.imread(str(sys.argv)['--flat'], cv2.IMREAD_UNCHANGED).astype(np.uint16)
+    if args['--flat']:
+        print("Reading master flat frame '{}'...".format(args['--flat']))
+        master_flat = cv2.imread(args['--flat'], cv2.IMREAD_UNCHANGED).astype(np.uint16)
         master_flat[master_flat <= 0] = 1 # prevent divide by zero
 
         max_flat = float(np.amax(master_flat))
@@ -27,22 +61,22 @@ def load_master_flat_frame():
         master_flat = 1.2 * master_flat / max_flat
 
 def load_mask():
-    global alignment_mask
+    global args, alignment_mask
 
-    if str(sys.argv)['--mask']:
-        print("Reading mask '{}'...".format(str(sys.argv)['--mask']))
-        alignment_mask = cv2.imread(str(sys.argv)['--mask'], cv2.IMREAD_UNCHANGED).astype(np.uint8)
+    if args['--mask']:
+        print("Reading mask '{}'...".format(args['--mask']))
+        alignment_mask = cv2.imread(args['--mask'], cv2.IMREAD_UNCHANGED).astype(np.uint8)
 
 def load_frame(imgname, pbar):
-    global master_dark, master_flat
+    global args, master_dark, master_flat
 
     linearGamma = (1,1)
     sRGBGamma = (2.4,12.92)
 
     calibrate = master_dark is not None and master_flat is not None
 
-    black        = 0 if calibrate or str(sys.argv)['--raw'] else None
-    whitebalance = [0,0,0,0] if calibrate or str(sys.argv)['--raw'] else None
+    black        = 0 if calibrate or args['--raw'] else None
+    whitebalance = [0,0,0,0] if calibrate or args['--raw'] else None
 
     params = rawpy.Params(gamma=linearGamma,
                           no_auto_scale=False,
@@ -75,14 +109,14 @@ def load_frame(imgname, pbar):
                 corrected[corrected < 0] = 0
                 np.copyto(raw.raw_image, corrected.astype(np.uint16))
             
-            if str(sys.argv)['--raw']:
+            if args['--raw']:
                 img = np.float32(raw.raw_image.astype(np.uint16) / 65535.0)
             else:
                 pbar.set_postfix(step=f"demosaicing")
                 img = np.float32(raw.postprocess(params).astype(np.uint16) / 65535.0)
             
             # crop margin
-            if str(sys.argv)['--visible']:
+            if args['--visible']:
                 s = raw.sizes
                 img = img[s.top_margin*2:s.raw_height - s.top_margin*2,
                           s.left_margin*2:s.raw_width - s.left_margin*2]
@@ -95,7 +129,8 @@ def is_power_of_two(n):
     return (n != 0) and (n & (n-1) == 0)
 
 def compute_homography(next_image, base_image, frame_num = 0, cache = None):
-   
+    global args
+
     MAX_FEATURES = 500
     GOOD_MATCH_PERCENT = 0.10
 
@@ -103,16 +138,16 @@ def compute_homography(next_image, base_image, frame_num = 0, cache = None):
     next_imageGray = cv2.cvtColor(next_image, cv2.COLOR_BGR2GRAY)
     base_imageGray = cv2.cvtColor(base_image, cv2.COLOR_BGR2GRAY)
 
-    if str(sys.argv)['--threshold']:
-        thr = np.percentile(next_imageGray, str(sys.argv)['--threshold'])
+    if args['--threshold']:
+        thr = np.percentile(next_imageGray, args['--threshold'])
         next_imageGray = (next_imageGray - thr) / (1.0 - thr)
         next_imageGray[next_imageGray < 0] = 0
         
-        thr = np.percentile(base_imageGray, str(sys.argv)['--threshold'])
+        thr = np.percentile(base_imageGray, args['--threshold'])
         base_imageGray = (base_imageGray - thr) / (1.0 - thr)
         base_imageGray[base_imageGray < 0] = 0
 
-    if str(sys.argv)['--debug'] >= 3:
+    if args['--debug'] >= 3:
         cv2.imwrite(f'DEBUG_next-{frame_num}-after-threshold.hdr', next_imageGray)
         cv2.imwrite(f'DEBUG_base-{frame_num}-after-threshold.hdr', base_imageGray)
 
@@ -148,7 +183,7 @@ def compute_homography(next_image, base_image, frame_num = 0, cache = None):
     numGoodMatches = int(len(matches) * GOOD_MATCH_PERCENT)
     matches = matches[:numGoodMatches]
 
-    if str(sys.argv)['--debug'] >= 3:    
+    if args['--debug'] >= 3:    
         # Draw top matches
         imMatches = cv2.drawMatches((next_image * 255).astype(np.uint8), kp1,
                                     (base_image * 255).astype(np.uint8), kp2, matches, None)
@@ -186,14 +221,14 @@ def add_padding(_img, _border_coeff = 0):
 
 
 def exit_handler():
-    global stabilized_average, divider_mask, imagenumbers
+    global args, stabilized_average, divider_mask, imagenumbers
 
     print(f"Averaged {np.min(divider_mask)}/{np.mean(divider_mask)}/{np.max(divider_mask)} images.")
 
     stabilized_average /= divider_mask # dividing sum by number of images
  
-    if str(sys.argv)['-o']:
-        outname = f"{str(sys.argv)['-o']}{imagenumbers[0]}-{imagenumbers[-1]}"
+    if args['-o']:
+        outname = f"{args['-o']}{imagenumbers[0]}-{imagenumbers[-1]}"
     else:
         outname = f"{imagenumbers[0]}-{imagenumbers[-1]}"
 
@@ -207,7 +242,7 @@ def exit_handler():
 
 
 def main():
-    global stabilized_average, divider_mask, imagenumbers
+    global args, stabilized_average, divider_mask, imagenumbers
 
     atexit.register(exit_handler)
     
@@ -225,12 +260,12 @@ def main():
 
     imagenumbers = []
 
-    infiles = (sys.argv)['INFILES']
+    infiles = args['INFILES']
     infiles.sort()
 
     # check if a base frame is specified, otherwise just use the first image in infiles
-    if str(sys.argv)['--base']:
-        base = str(sys.argv)['--base']
+    if args['--base']:
+        base = args['--base']
         idx = next((i for i, x in enumerate(infiles) if x == base), None)
         if idx:
             # if base file is one of the infiles, then make it the first one via circular shift
@@ -240,31 +275,31 @@ def main():
             infiles = [base] + infiles
 
     # convert boolean arguments to actual booleans
-    str(sys.argv)['--align'] = str(sys.argv)['--align'].lower() in ["true", "1"]
-    str(sys.argv)['--cache'] = str(sys.argv)['--cache'].lower() in ["true", "1"]
-    str(sys.argv)['--raw'] = str(sys.argv)['--raw'].lower() in ["true", "1"]
-    str(sys.argv)['--visible'] = str(sys.argv)['--visible'].lower() in ["true", "1"]
+    args['--align'] = args['--align'].lower() in ["true", "1"]
+    args['--cache'] = args['--cache'].lower() in ["true", "1"]
+    args['--raw'] = args['--raw'].lower() in ["true", "1"]
+    args['--visible'] = args['--visible'].lower() in ["true", "1"]
 
     # clip numerical parameters to appropriate ranges
-    str(sys.argv)['--padding'] = np.clip(np.float32(str(sys.argv)['--padding']), 0.0, 1.0)
-    str(sys.argv)['--threshold'] = np.clip(np.float32(str(sys.argv)['--threshold']), 0.0, 1.0)
-    str(sys.argv)['--debug'] = int(str(sys.argv)['--debug'])
+    args['--padding'] = np.clip(np.float32(args['--padding']), 0.0, 1.0)
+    args['--threshold'] = np.clip(np.float32(args['--threshold']), 0.0, 1.0)
+    args['--debug'] = int(args['--debug'])
 
     numimages = len(infiles)
 
-    if str(sys.argv)['--align']:
+    if args['--align']:
         print(f"Attempting to stack {numimages} images (with all images aligned to the first):", "\n  ".join([f"{i:03d}: {s}" for i,s in enumerate(infiles)]), sep="\n  ")
-        print(f"{'Will' if str(sys.argv)['--cache'] else 'Will not'} cache base frame keypoints during alignment.")
+        print(f"{'Will' if args['--cache'] else 'Will not'} cache base frame keypoints during alignment.")
     else:
         print(f"Attempting to stack {numimages} images", "\n  ".join([f"{i:03d}: {s}" for i,s in enumerate(infiles)]), sep="\n  ")
 
-    print(f"{'Will' if str(sys.argv)['--dark'] or str(sys.argv)['--flat'] else 'Will not'} use flat and dark frames for calibration.")
+    print(f"{'Will' if args['--dark'] or args['--flat'] else 'Will not'} use flat and dark frames for calibration.")
 
     load_master_dark_frame()
     load_master_flat_frame()
     load_mask()
 
-    keypoint_cache = dict() if str(sys.argv)['--cache'] else None
+    keypoint_cache = dict() if args['--cache'] else None
 
     pbar = tqdm(range(numimages))
     for f in pbar:
@@ -293,7 +328,7 @@ def main():
         
         input_image_no_border = input_image_
 
-        input_image = add_padding(input_image_no_border, str(sys.argv)["--padding"])
+        input_image = add_padding(input_image_no_border, args["--padding"])
         
         shape_no_border = input_image_no_border.shape
         shape = input_image.shape
@@ -303,14 +338,14 @@ def main():
             
         if mask_image is None:
             mask_image_no_border = make_mask_for_image(input_image_no_border)
-            mask_image = add_padding(mask_image_no_border, str(sys.argv)["--padding"])
+            mask_image = add_padding(mask_image_no_border, args["--padding"])
 
         imagenumbers.append(f)
         
         transformed_image = input_image
         transformed_mask  = mask_image
 
-        if str(sys.argv)['--align'] and f > 0:
+        if args['--align'] and f > 0:
             base = (stabilized_average/divider_mask)  
             base = base.clip(0,1)
 
@@ -322,12 +357,12 @@ def main():
         stabilized_average += np.float32(transformed_image)
 
         if divider_mask is None:
-            divider_mask = make_mask_for_image(mask_image_no_border, str(sys.argv)["--padding"])
+            divider_mask = make_mask_for_image(mask_image_no_border, args["--padding"])
             divider_mask[:] = 1
         else:
             divider_mask += transformed_mask
 
-        if str(sys.argv)['--debug'] >= 3:
+        if args['--debug'] >= 3:
             cv2.imwrite(f'DEBUG_{f}.hdr', np.float32(transformed_image))
             cv2.imwrite(f'DEBUG_average_so_far_{f}.hdr', stabilized_average / divider_mask)
             cv2.imwrite(f'DEBUG_average_so_far_{f}.png', np.uint16(stabilized_average / divider_mask * 65535))

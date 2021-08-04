@@ -6,6 +6,10 @@
   box-sizing: border-box;
   font-family: "Poppins" , sans-serif;
 }
+::selection{
+  color: #000;
+  background: #fff;
+}
 nav{
   position: fixed;
   background: #1b1b1b;
@@ -50,20 +54,21 @@ nav .menu{
   background: #fff;
   color: black;
 }
-body{
-  min-height: 100vh;
-  width: 100%;
-  background: #c8e8e9;
+.set{
   display: flex;
+  background: url('../images/image-4.jpeg')no-repeat;
+  background-size: cover;
+  background-position: center;
   align-items: center;
   justify-content: center;
+  min-height: 100vh;
+  padding: 40px;
 }
 .container{
   width: 85%;
   background: #fff;
-  border-radius: 6px;
+  background-color: hsla(210, 100%, 0%, 0.6);
   padding: 20px 60px 30px 40px;
-  box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
 }
 .container .content{
   display: flex;
@@ -96,7 +101,7 @@ body{
 }
 .content .left-side .details i{
   font-size: 30px;
-  color: #3e2093;
+  color: #ffffff;
   margin-bottom: 10px;
 }
 .content .left-side .details .topic{
@@ -115,7 +120,7 @@ body{
 .content .right-side .topic-text{
   font-size: 23px;
   font-weight: 600;
-  color: #3e2093;
+  color: #ffffff;
 }
 .right-side .input-box{
   height: 50px;
@@ -129,7 +134,7 @@ body{
   border: none;
   outline: none;
   font-size: 16px;
-  background: #F0F1F8;
+  background: #ffffff;
   border-radius: 6px;
   padding: 0 15px;
   resize: none;
@@ -151,12 +156,12 @@ body{
   border: none;
   padding: 8px 16px;
   border-radius: 6px;
-  background: #3e2093;
+  background: #949494;
   cursor: pointer;
   transition: all 0.3s ease;
 }
 .button input[type="button"]:hover{
-  background: #5029bc;
+  background: #949494;
 }
 
 @media (max-width: 950px) {
