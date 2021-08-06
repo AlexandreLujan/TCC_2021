@@ -6,17 +6,17 @@ var storage = new GridFsStorage({
   url: process.env.MONGO_CONNECTION,
   options: { useNewUrlParser: true, useUnifiedTopology: true },
   file: (req, file) => {
-    const match = ["image/CR2", "image/RAW"];
-
-    if (match.indexOf(file.mimetype) === -1) {
-      const filename = `${Date.now()}-astrophoto-${file.originalname}`;
-      return filename;
-    }
-
-    return {
-      bucketName: "fs",
-      filename: `${Date.now()}-astrophoto-${file.originalname}`
-    };
+    const match = ["image/RAW", "image/CR2"];
+    return new Promise((resolve, reject) => {
+      if (match.indexOf(file.mimetype) === -1) {
+          resolve({
+              bucketName: 'tobias',
+              filename: `${file.originalname}`
+          })
+      } else {
+          reject(Error("File type has been rejected"));
+      }
+    });  
   }
 });
 

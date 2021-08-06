@@ -16,7 +16,7 @@ let gfs;
 connect.once('open', () => {
  // The monitoring database is turned on, and the file access control is carried out through gridfs-stream middleware and the database
     gfs = GridFsStream(connect.db, mongoose.mongo)
-    gfs.collection('fs')
+    gfs.collection('tobias')
  //It will create upload.files (record file information) in our database upload.chunks (storage file chunks)
 })
 
@@ -56,14 +56,15 @@ router.get('/download/:filename', global.authenticationMiddleware(), (req, res) 
 })
 
 router.delete('/files/:id', global.authenticationMiddleware(), (req, res) => {
-    gfs.files.findByIdAndRemove({ _id: req.params.id, root: '' }, (err) => {
+    gfs.remove({_id: req.params.id, root: 'tobias'}, function (err) {
         if (err) {
             return res.status(404).json({
  Err:'The deleted file does not exist! '
             })
         }
-        res.redirect('/repository')
-    })
+        res.redirect('/repository');
+    });
+
 })
 
 module.exports = router;

@@ -2,13 +2,12 @@ var express = require('express');
 var router = express.Router();
 const upload = require("../config-upload");
 
-
 /* GET upload page. */
 router.get('/', global.authenticationMiddleware(), function(req, res, next) {
   res.render('upload', { title: req.user.username });
 });
 
-router.post('/photo', async (req, res) => {
+router.post('/photo', global.authenticationMiddleware(), async (req, res) => {
     console.log('x');
     try {
         await upload(req, res);
