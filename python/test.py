@@ -74,7 +74,7 @@ def load_frame(imgname, pbar):
 
     black        = 0 if calibrate or sys.argv[6] else None
     whitebalance = [0,0,0,0] if calibrate or sys.argv[6] else None
-
+#sys.argv[16].lower() == 'true'
     params = rawpy.Params(gamma=linearGamma,
                           no_auto_scale=False,
                           no_auto_bright=True,
@@ -224,7 +224,7 @@ def exit_handler():
     cv2.imwrite(outname + '.tiff', np.uint16(stabilized_average*65535))
     cv2.imwrite(outname + '.hdr', stabilized_average)
 
-    fsi.put( open( r'/home/alexandre/TCC_2021/python/' + outname + '.tiff', 'rb')  )
+    #fsi.put( open( r'/home/alexandre/TCC_2021/python/' + outname + '.tiff', 'rb')  )
 
 def main():
     global stabilized_average, divider_mask, imagenumbers

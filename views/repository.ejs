@@ -5,6 +5,7 @@
     <meta charset="UTF-8">
     <title> Drop Down Sidebar Menu | CodingLab </title>
     <link rel="stylesheet" href="../stylesheets/repository.css">
+    <link rel="stylesheet" href="../stylesheets/popup_info.css">
     <link href='https://unpkg.com/boxicons@2.0.7/css/boxicons.min.css' rel='stylesheet'>
      <meta name="viewport" content="width=device-width, initial-scale=1.0">
    </head>
@@ -48,8 +49,8 @@
         </div>
         <ul class="sub-menu">
           <li><a class="link_name" href="#">Process</a></li>
-          <li><a href="/process">Automatic</a></li>
-          <li><a href="#">Step by Step</a></li>
+          <li><a href="/a-process">Automatic</a></li>
+          <li><a href="/m-process">Manual</a></li>
         </ul>
       </li>
       <li>
@@ -112,19 +113,20 @@
                         <div class="col-sm card card-body m-3  col-md-2">
                             <% if(file.isImage){ %>
                                 
-                                <img src="/repository/image/<%= file.filename %>" />
+                                <img src="/repository/images/<%=file.filename%>" />
                                 <% } else { %>
-                                    <a href="/repository/download/<%= file.filename %>">
+                                    <a href="/repository/download/<%=file.filename%>" style="color:aliceblue">
                                         <%= file.filename %>
                                     </a>
                                     <%}%>
                                         <form action="/repository/files/<%= file._id%>?_method=DELETE" method="POST">
                                             <button class="btn btn-danger btn-block mt-4">Delete</button>
                                         </form>
+
                         </div>
                         <% }) %>
                             <% }else { %>
-                                <p class="card card-body text-center display-4 my-4">file does not exist</p>
+                                <p class="card card-body text-center display-4 my-4" style="color:aliceblue">file does not exist</p>
                                 <% } %>
             </div>
         </div>
@@ -132,6 +134,6 @@
   </section>
 
   <script src="../javascripts/left_bar.js"></script>
-  
+
 </body>
 </html>

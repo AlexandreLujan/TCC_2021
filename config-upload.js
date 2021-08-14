@@ -3,14 +3,14 @@ const multer = require("multer");
 const {GridFsStorage} = require("multer-gridfs-storage");
 
 var storage = new GridFsStorage({
-  url: process.env.MONGO_CONNECTION,
+  url: process.env.MONGO_URL_1,
   options: { useNewUrlParser: true, useUnifiedTopology: true },
   file: (req, file) => {
     const match = ["image/RAW", "image/CR2"];
     return new Promise((resolve, reject) => {
       if (match.indexOf(file.mimetype) === -1) {
           resolve({
-              bucketName: 'tobias',
+              bucketName: req.user._id,
               filename: `${file.originalname}`
           })
       } else {

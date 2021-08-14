@@ -23,9 +23,10 @@ var usersRouter = require('./routes/users');
 var accRouter = require('./routes/account');
 var uploadRouter = require('./routes/upload');
 var reposRouter = require('./routes/repository');
-var procRouter = require('./routes/process');
+var aprocRouter = require('./routes/a-process');
 var faqRouter = require('./routes/faq');
 var feedRouter = require('./routes/feedback');
+var mprocRouter = require('./routes/m-process');
 
 var app = express();
 
@@ -62,7 +63,8 @@ app.use('/users', usersRouter);
 app.use('/account', accRouter);
 app.use('/upload', uploadRouter);
 app.use('/repository', reposRouter);
-app.use('/process', procRouter);
+app.use('/a-process', aprocRouter);
+app.use('/m-process', mprocRouter);
 app.use('/faq', faqRouter);
 app.use('/feedback', feedRouter)
 

@@ -1,0 +1,286 @@
+<!DOCTYPE html>
+
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="UTF-8">
+    <title> Drop Down Sidebar Menu | CodingLab </title>
+    <link rel="stylesheet" href="../stylesheets/m-process.css">
+    <link href='https://unpkg.com/boxicons@2.0.7/css/boxicons.min.css' rel='stylesheet'>
+     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+   </head>
+<body>
+  <div class="sidebar close">
+    <div class="logo-details">
+      <i class='bx bxl-c-plus-plus'></i>
+      <span class="logo_name">CodingLab</span>
+    </div>
+    <ul class="nav-links">
+      <li>
+        <a href="/account">
+          <i class='bx bx-grid-alt' ></i>
+          <span class="link_name">Dashboard</span>
+        </a>
+        <ul class="sub-menu blank">
+          <li><a class="link_name" href="/account">Dashboard</a></li>
+        </ul>
+      </li>
+      <li>
+        <div class="iocn-link">
+          <a href="#">
+            <i class='bx bx-folder' ></i>
+            <span class="link_name">Repository</span>
+          </a>
+          <i class='bx bxs-chevron-down arrow' ></i>
+        </div>
+        <ul class="sub-menu">
+          <li><a class="link_name" href="#">Repository</a></li>
+          <li><a href="#">Processed</a></li>
+          <li><a href="/repository">Unprocessed</a></li>
+        </ul>
+      </li>
+      <li>
+        <div class="iocn-link">
+          <a href="#">
+            <i class='bx bx-play-circle'></i>
+            <span class="link_name">Process</span>
+          </a>
+          <i class='bx bxs-chevron-down arrow' ></i>
+        </div>
+        <ul class="sub-menu">
+          <li><a class="link_name" href="#">Process</a></li>
+          <li><a href="/a-process">Automatic</a></li>
+          <li><a href="/m-process">Manual</a></li>
+        </ul>
+      </li>
+      <li>
+        <a href="/upload">
+          <i class='bx bx-cloud-upload'></i>
+          <span class="link_name">Upload Photos</span>
+        </a>
+        <ul class="sub-menu blank">
+          <li><a class="link_name" href="/upload">Upload Photos</a></li>
+        </ul>
+      </li>
+      <li>
+        <div class="iocn-link">
+          <a href="#">
+            <i class='bx bx-wrench' ></i>
+            <span class="link_name">Tools</span>
+          </a>
+          <i class='bx bxs-chevron-down arrow' ></i>
+        </div>
+        <ul class="sub-menu">
+          <li><a class="link_name" href="#">Tools</a></li>
+          <li><a href="#">Stacking</a></li>
+          <li><a href="#">Fix Pixels</a></li>
+          <li><a href="#">Edit Colors</a></li>
+        </ul>
+      </li>
+      <li>
+        <a href="#">
+          <i class='bx bxs-user-account' ></i>
+          <span class="link_name">Account</span>
+        </a>
+        <ul class="sub-menu blank">
+          <li><a class="link_name" href="#">Account</a></li>
+        </ul>
+      </li>
+    <li>
+    <div class="profile-details">
+      <div class="profile-content">
+        <img src="" alt="">
+      </div>
+      <div class="name-job">
+        <div class="profile_name"><%= title %></div>
+        <div class="job">User</div>
+      </div>
+      <i class='bx bx-log-out' ></i>
+    </div>
+  </li>
+</ul>
+  </div>
+  <section class="home-section">
+    <div class="home-content">
+      <i class='bx bx-menu' ></i>
+      <span class="text">Manual Process</span>
+    </div>
+    <p>
+        <form action="/m-process/exec" method="POST"></form>
+            <div class="left">
+                <p>Base Frame:</p>
+                <fieldset id="base-frame">
+                    <input type="radio" value="True" name="base-frame">
+                    <label for="base-frame">True</label>
+                    <input type="radio" value="False" name="base-frame" checked>
+                    <label for="base-frame">False</label>
+                </fieldset>
+                <br>
+                <p>Align the images using a homography:</p>
+                <fieldset id="align">
+                    <input type="radio" value="True" name="align" checked>
+                    <label for="align">True</label>
+                    <input type="radio" value="False" name="align">
+                    <label for="align">False</label>
+                </fieldset>
+                <br>
+                <p>Cache the keypoints in the base frame:</p>
+                <fieldset id="cache">
+                    <input type="radio" value="True" name="cache" checked>
+                    <label for="cache">True</label>
+                    <input type="radio" value="False" name="cache">
+                    <label for="cache">False</label>
+                </fieldset>
+                <br>
+                <p>Don't demosaic. Keep as raw Bayer mosaic:</p>
+                <fieldset id="raw">
+                    <input type="radio" value="True" name="raw">
+                    <label for="raw">True</label>
+                    <input type="radio" value="False" name="raw" checked>
+                    <label for="raw">False</label>
+                </fieldset>
+                <br>
+                <p>Crop to the visible window:</p>
+                <fieldset id="crop">
+                    <input type="radio" value="True" name="crop" checked>
+                    <label for="crop">True</label>
+                    <input type="radio" value="False" name="crop">
+                    <label for="crop">False</label>
+                </fieldset>
+                <br>
+                <p>Add black padding (in fraction of width,height) around the image:</p>
+                <fieldset id="padd">
+                    <input type="text" name="padd" placeholder="0.0" class="mytext">
+                </fieldset>
+                <br>
+                <p> Align using images thresholded at the percentile:</p>
+                <fieldset id="thr">
+                    <input type="text" name="thr" placeholder="0.85" class="mytext">
+                </fieldset>
+                <br>
+                <p>Dark Frame:</p>
+                <fieldset id="dark-frame">
+                    <input type="radio" value="True" name="dark-frame">
+                    <label for="dark-frame">True</label>
+                    <input type="radio" value="False" name="dark-frame" checked>
+                    <label for="dark-frame">False</label>
+                </fieldset>
+                <br>
+                <p>Flat Frame:</p>
+                <fieldset id="flat-frame">
+                    <input type="radio" value="True" name="flat-frame">
+                    <label for="flat-frame">True</label>
+                    <input type="radio" value="False" name="flat-frame" checked>
+                    <label for="flat-frame">False</label>
+                </fieldset>
+                <br>
+                <p>Mask Frame:</p>
+                <fieldset id="mask-frame">
+                    <input type="radio" value="True" name="mask-frame">
+                    <label for="mask-frame">True</label>
+                    <input type="radio" value="False" name="mask-frame" checked>
+                    <label for="mask-frame">False</label>
+                </fieldset>
+                <br>
+                <p>Output Name:</p>
+                <fieldset id="output-name">
+                    <input type="text" name="output-name" placeholder="My-Processed-Photo">
+                </fieldset>
+            </div>
+            <div class="center">
+                <p>No Auto Scale:</p>
+                <fieldset id="no-auto-scale">
+                    <input type="radio" value="True" name="no-auto-scale">
+                    <label for="no-auto-scale">True</label>
+                    <input type="radio" value="False" name="no-auto-scale" checked>
+                    <label for="no-auto-scale">False</label>
+                </fieldset>
+                <br>
+                <p>No Auto Bright</p>
+                <fieldset id="no-auto-bright">
+                    <input type="radio" value="True" name="no-auto-bright" checked>
+                    <label for="no-auto-bright">True</label>
+                    <input type="radio" value="False" name="no-auto-bright">
+                    <label for="no-auto-bright">False</label>
+                </fieldset>
+                <br>
+                <p>Output bps</p>
+                <fieldset id="output-bps">
+                    <input type="radio" value="8" name="output-bps">
+                    <label for="output-bps">8</label>
+                    <input type="radio" value="16" name="output-bps" checked>
+                    <label for="output-bps">16</label>
+                </fieldset>
+                <br>
+                <p>Use Camera White Balance</p>
+                <fieldset id="camera-wb">
+                    <input type="radio" value="True" name="camera-wb">
+                    <label for="camera-wb">True</label>
+                    <input type="radio" value="False" name="camera-wb" checked>
+                    <label for="camera-wb">False</label>
+                </fieldset>
+                <br>
+                <p>Use Auto White Balance</p>
+                <fieldset id="auto-wb">
+                    <input type="radio" value="True" name="auto-wb">
+                    <label for="auto-wb">True</label>
+                    <input type="radio" value="False" name="auto-wb" checked>
+                    <label for="auto-wb">False</label>
+                </fieldset>
+                <br>
+                <p>Color Space</p>
+                <select name="color-space" id="color-space">
+                    <option value="2">Adobe</option>
+                    <option value="4">ProPhoto</option>
+                    <option value="3">Wide</option>
+                    <option value="5">XYZ</option>
+                    <option value="0">raw</option>
+                    <option value="1" selected>sRGB</option>
+                </select>
+                <br>
+                <p>Demosaic Algorithm</p>
+                <select name="demosaic-algorithm" id="demosaic-algorithm">
+                    <option value="12">AAHD</option>
+                    <option value="6">AFD</option>
+                    <option selected value="3">AHD</option>
+                    <option value="10">AMAZE</option>
+                    <option value="4">DCB</option>
+                    <option value="11">DHT</option>
+                    <option value="0">LINEAR</option>
+                    <option value="9">LIMMSE</option>
+                    <option value="5">MODIFIED_AHD</option>
+                    <option value="2">PPG</option>
+                    <option value="7">VCD</option>
+                    <option value="8">VCD_MODIFIED_AHD</option>
+                    <option value="1">VNG</option>
+                </select>
+                <br>
+                <p>FBDD noise reduction:</p>
+                <select name="fbdd-noise-reduction" id="fbdd-noise-reduction">
+                    <option value="2">Full</option>
+                    <option value="1">Light</option>
+                    <option value="0" selected>Off</option>
+                </select>
+                <br>
+                <p>DCB Enhance:</p>
+                <fieldset id="dcb-enhance">
+                    <input type="radio" value="True" name="dcb-enhance">
+                    <label for="dcb-enhance">True</label>
+                    <input type="radio" value="False" name="dcb-enhance" checked>
+                    <label for="dcb-enhance">False</label>
+                </fieldset>
+                <br>
+                <p>DCB correction passes:</p>
+                <fieldset id="dcb-iterations">
+                    <input type="text" name="dcb-iterations" placeholder="0" class="mytext">
+                </fieldset>
+            </div>
+            <button type="submit" class="btn-bot">Process</button>
+        </form>
+    </p>
+  </section>
+
+  <script src="../javascripts/left_bar.js"></script>
+  
+   
+</body>
+</html>
