@@ -105,14 +105,14 @@
       <span class="text">Manual Process</span>
     </div>
     <p>
-        <form action="/m-process/exec" method="POST"></form>
+        <form action="/m-process/m-exec" method="POST">
             <div class="left">
                 <p>Base Frame:</p>
-                <fieldset id="base-frame">
-                    <input type="radio" value="True" name="base-frame">
-                    <label for="base-frame">True</label>
-                    <input type="radio" value="False" name="base-frame" checked>
-                    <label for="base-frame">False</label>
+                <fieldset id="baseFrame">
+                    <input type="radio" value="True" name="baseFrame">
+                    <label for="baseFrame">True</label>
+                    <input type="radio" value="False" name="baseFrame" checked>
+                    <label for="baseFrame">False</label>
                 </fieldset>
                 <br>
                 <p>Align the images using a homography:</p>
@@ -149,132 +149,164 @@
                 <br>
                 <p>Add black padding (in fraction of width,height) around the image:</p>
                 <fieldset id="padd">
-                    <input type="text" name="padd" placeholder="0.0" class="mytext">
+                    <input type="text" name="padd" value="0.0" placeholder="0.0" class="mytext">
                 </fieldset>
                 <br>
                 <p> Align using images thresholded at the percentile:</p>
                 <fieldset id="thr">
-                    <input type="text" name="thr" placeholder="0.85" class="mytext">
+                    <input type="text" name="thr" value="0.85" placeholder="0.85" class="mytext">
                 </fieldset>
                 <br>
                 <p>Dark Frame:</p>
-                <fieldset id="dark-frame">
-                    <input type="radio" value="True" name="dark-frame">
-                    <label for="dark-frame">True</label>
-                    <input type="radio" value="False" name="dark-frame" checked>
-                    <label for="dark-frame">False</label>
+                <fieldset id="darkFrame">
+                    <input type="radio" value="True" name="darkFrame">
+                    <label for="darkFrame">True</label>
+                    <input type="radio" value="False" name=darkFrame checked>
+                    <label for="darkFrame">False</label>
                 </fieldset>
                 <br>
                 <p>Flat Frame:</p>
-                <fieldset id="flat-frame">
-                    <input type="radio" value="True" name="flat-frame">
-                    <label for="flat-frame">True</label>
-                    <input type="radio" value="False" name="flat-frame" checked>
-                    <label for="flat-frame">False</label>
+                <fieldset id="flatFrame">
+                    <input type="radio" value="True" name="flatFrame">
+                    <label for="flatFrame">True</label>
+                    <input type="radio" value="False" name="flatFrame" checked>
+                    <label for="flatFrame">False</label>
                 </fieldset>
                 <br>
                 <p>Mask Frame:</p>
-                <fieldset id="mask-frame">
-                    <input type="radio" value="True" name="mask-frame">
-                    <label for="mask-frame">True</label>
-                    <input type="radio" value="False" name="mask-frame" checked>
-                    <label for="mask-frame">False</label>
+                <fieldset id="maskFrame">
+                    <input type="radio" value="True" name="maskFrame">
+                    <label for="maskFrame">True</label>
+                    <input type="radio" value="False" name="maskFrame" checked>
+                    <label for="maskFrame">False</label>
                 </fieldset>
                 <br>
                 <p>Output Name:</p>
-                <fieldset id="output-name">
-                    <input type="text" name="output-name" placeholder="My-Processed-Photo">
+                <fieldset id="outputName">
+                    <input type="text" name="outputName"value="My-Processed-Photo" placeholder="My-Processed-Photo">
                 </fieldset>
+                <br>
+                <p>Image Format</p>
+                <fieldset>
+                    <select name="imageFormat" id="imageFormat">
+                        <option value=".tiff" selected>TIFF</option>
+                        <option value=".jpg">JPG</option>
+                        <option value=".png" >PNG</option>
+                    </select>
+                </fieldset>  
             </div>
             <div class="center">
                 <p>No Auto Scale:</p>
-                <fieldset id="no-auto-scale">
-                    <input type="radio" value="True" name="no-auto-scale">
-                    <label for="no-auto-scale">True</label>
-                    <input type="radio" value="False" name="no-auto-scale" checked>
-                    <label for="no-auto-scale">False</label>
+                <fieldset id="noAutoScale">
+                    <input type="radio" value="True" name="noAutoScale">
+                    <label for="noAutoScale">True</label>
+                    <input type="radio" value="False" name="noAutoScale" checked>
+                    <label for="noAutoScale">False</label>
                 </fieldset>
                 <br>
                 <p>No Auto Bright</p>
-                <fieldset id="no-auto-bright">
-                    <input type="radio" value="True" name="no-auto-bright" checked>
-                    <label for="no-auto-bright">True</label>
-                    <input type="radio" value="False" name="no-auto-bright">
-                    <label for="no-auto-bright">False</label>
+                <fieldset id="noAutoBright">
+                    <input type="radio" value="True" name="noAutoBright" checked>
+                    <label for="noAutoBright">True</label>
+                    <input type="radio" value="False" name="noAutoBright">
+                    <label for="noAutoBright">False</label>
                 </fieldset>
                 <br>
                 <p>Output bps</p>
-                <fieldset id="output-bps">
-                    <input type="radio" value="8" name="output-bps">
-                    <label for="output-bps">8</label>
-                    <input type="radio" value="16" name="output-bps" checked>
-                    <label for="output-bps">16</label>
+                <fieldset id="outputBPS">
+                    <input type="radio" value="8" name="outputBPS">
+                    <label for="outputBPS">8</label>
+                    <input type="radio" value="16" name="outputBPS" checked>
+                    <label for="outputBPS">16</label>
                 </fieldset>
                 <br>
                 <p>Use Camera White Balance</p>
-                <fieldset id="camera-wb">
-                    <input type="radio" value="True" name="camera-wb">
-                    <label for="camera-wb">True</label>
-                    <input type="radio" value="False" name="camera-wb" checked>
-                    <label for="camera-wb">False</label>
+                <fieldset id="cameraWB">
+                    <input type="radio" value="True" name="cameraWB">
+                    <label for="cameraWB">True</label>
+                    <input type="radio" value="False" name="cameraWB" checked>
+                    <label for="cameraWB">False</label>
                 </fieldset>
                 <br>
                 <p>Use Auto White Balance</p>
-                <fieldset id="auto-wb">
-                    <input type="radio" value="True" name="auto-wb">
-                    <label for="auto-wb">True</label>
-                    <input type="radio" value="False" name="auto-wb" checked>
-                    <label for="auto-wb">False</label>
+                <fieldset id="autoWB">
+                    <input type="radio" value="True" name="autoWB">
+                    <label for="autoWB">True</label>
+                    <input type="radio" value="False" name="autoWB" checked>
+                    <label for="autoWB">False</label>
                 </fieldset>
                 <br>
                 <p>Color Space</p>
-                <select name="color-space" id="color-space">
-                    <option value="2">Adobe</option>
-                    <option value="4">ProPhoto</option>
-                    <option value="3">Wide</option>
-                    <option value="5">XYZ</option>
-                    <option value="0">raw</option>
-                    <option value="1" selected>sRGB</option>
-                </select>
+                <fieldset>
+                    <select name="colorSpace" id="colorSpace">
+                        <option value="2">Adobe</option>
+                        <option value="4">ProPhoto</option>
+                        <option value="3">Wide</option>
+                        <option value="5">XYZ</option>
+                        <option value="0">raw</option>
+                        <option value="1" selected>sRGB</option>
+                    </select>
+                </fieldset>    
                 <br>
                 <p>Demosaic Algorithm</p>
-                <select name="demosaic-algorithm" id="demosaic-algorithm">
-                    <option value="12">AAHD</option>
-                    <option value="6">AFD</option>
-                    <option selected value="3">AHD</option>
-                    <option value="10">AMAZE</option>
-                    <option value="4">DCB</option>
-                    <option value="11">DHT</option>
-                    <option value="0">LINEAR</option>
-                    <option value="9">LIMMSE</option>
-                    <option value="5">MODIFIED_AHD</option>
-                    <option value="2">PPG</option>
-                    <option value="7">VCD</option>
-                    <option value="8">VCD_MODIFIED_AHD</option>
-                    <option value="1">VNG</option>
-                </select>
+                <fieldset>
+                    <select name="demosaicAlgorithm" id="demosaicAlgorithm">
+                        <option value="12">AAHD</option>
+                        <option value="6">AFD</option>
+                        <option selected value="3">AHD</option>
+                        <option value="10">AMAZE</option>
+                        <option value="4">DCB</option>
+                        <option value="11">DHT</option>
+                        <option value="0">LINEAR</option>
+                        <option value="9">LIMMSE</option>
+                        <option value="5">MODIFIED_AHD</option>
+                        <option value="2">PPG</option>
+                        <option value="7">VCD</option>
+                        <option value="8">VCD_MODIFIED_AHD</option>
+                        <option value="1">VNG</option>
+                    </select>
+                </fieldset>
                 <br>
                 <p>FBDD noise reduction:</p>
-                <select name="fbdd-noise-reduction" id="fbdd-noise-reduction">
-                    <option value="2">Full</option>
-                    <option value="1">Light</option>
-                    <option value="0" selected>Off</option>
-                </select>
+                <fieldset>
+                    <select name="fbddNoiseReduction" id="fbddNoiseReduction">
+                        <option value="2">Full</option>
+                        <option value="1">Light</option>
+                        <option value="0" selected>Off</option>
+                    </select>
+                </fieldset>
                 <br>
                 <p>DCB Enhance:</p>
-                <fieldset id="dcb-enhance">
-                    <input type="radio" value="True" name="dcb-enhance">
-                    <label for="dcb-enhance">True</label>
-                    <input type="radio" value="False" name="dcb-enhance" checked>
-                    <label for="dcb-enhance">False</label>
+                <fieldset id="dcbEnhance">
+                    <input type="radio" value="True" name="dcbEnhance">
+                    <label for="dcbEnhance">True</label>
+                    <input type="radio" value="False" name="dcbEnhance" checked>
+                    <label for="dcbEnhance">False</label>
                 </fieldset>
                 <br>
                 <p>DCB correction passes:</p>
-                <fieldset id="dcb-iterations">
-                    <input type="text" name="dcb-iterations" placeholder="0" class="mytext">
+                <fieldset id="dcbIterations">
+                    <input type="text" name="dcbIterations" value="0" placeholder="0" class="mytext">
                 </fieldset>
             </div>
-            <button type="submit" class="btn-bot">Process</button>
+            <div class = "right">
+              <p>Choose an album:</p>
+              <div class="row">
+                <fieldset id="album">
+                  <% if(folders){ %>
+                    <% for(var folder of folders) { %>
+                      <div class="col-sm card card-body m-3  col-md-2">
+                        <input type="radio" value="<%=folder%>" name="album">     
+                        <label for="album"><%= folder %></label>
+                      </div>                   
+                    <% } %>     
+                  <% }else { %>
+                    <p class="card card-body text-center display-4 my-4" style="color:aliceblue">No album</p>
+                  <% } %>
+                </fieldset>
+              </div>  
+            </div>
+          <button type="submit" class="btn-bot">Process</button>
         </form>
     </p>
   </section>

@@ -17,6 +17,7 @@ router.post('/signup', function(req, res, next){
     else{
       var text = 'Obrigado por se cadastrar {fulano}, sua senha é {senha}';
       text = text.replace('{fulano}', req.body.username).replace('{senha}', req.body.password);
+      console.log(text);
 
       //require('../mail')(req.body.email, 'Cadastro realizado com sucesso!', text);
       res.redirect('/login');

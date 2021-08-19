@@ -1,16 +1,40 @@
 var express = require('express');
 var router = express.Router();
 var {PythonShell} =require('python-shell');
+const fs = require('fs');
 
 /* GET Manual process page. */
 router.get('/', global.authenticationMiddleware(), function(req, res, next) {
-    
-    res.render('m-process', { title: 'Process' });
+
+    var Dir = (process.env.FILES_DIR).concat(req.user._id);
+    fs.readdir(Dir, function (err, folders) {
+        //handling error
+        if (err) {
+            return console.log('Unable to scan directory: ' + err);
+        }
+        //no folder found
+        if (!folders || folders.length === 0) {
+            res.render('m-process', { folders: false, title: 'Manual Process' });
+            return
+        }
+        //listing all folders
+        console.log(folders);
+        res.render('m-process', { folders: folders, title: 'Manual Process' });
+    });
 });
 
-router.post('/exec', global.authenticationMiddleware(), function(req, res, next) {
+router.post('/m-exec', global.authenticationMiddleware(), function(req, res, next) {
+    console.log(req.body.baseFrame, req.body.align, req.body.cache, req.body.raw,
+                req.body.crop, req.body.padd, req.body.thr, req.body.darkFrame,
+                req.body.flatFrame, req.body.maskFrame, req.body.outputName,
+                req.body.imageFormat, req.body.noAutoScale, req.body.noAutoBright,
+                req.body.outputBPS, req.body.cameraWB, req.body.autoWB,
+                req.body.colorSpace, req.body.demosaicAlgorithm, 
+                req.body.fbddNoiseReduction, req.body.dcbEnhance, 
+                req.body.dcbIterations, req.body.album);
+
     //Here are the option object in which arguments can be passed for the python_test.js.
-    let options = {
+   /* let options = {
         mode: 'text',
         pythonPath: 'python3', 
         pythonOptions: ['-u'], // get print results in real-time
@@ -25,7 +49,7 @@ router.post('/exec', global.authenticationMiddleware(), function(req, res, next)
         console.log('result: ', result.toString());
         //console.log('results: %j', result);
         //res.send(result.toString())
-    });
-});  
+    }); */
+}); 
 
 module.exports = router;

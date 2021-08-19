@@ -238,46 +238,6 @@
   font-size: 26px;
   font-weight: 600;
 }
-.home-section .left {
-    position: absolute;
-    left: 0;
-    width: 25%;
-    border: 3px solid;
-    padding: 10px;
-    color: white;
-}
-.home-section .center {
-    position: absolute;
-    margin-left: auto;
-    margin-right: auto;
-    left: 0;
-    right: 0;
-    width: 25%;
-    border: 3px solid;
-    padding: 10px;
-    color: white;
-}
-.home-section .right {
-  position: absolute;
-  right: 0;
-  width: 25%;
-  border: 3px solid;
-  padding: 10px;
-  color: white;
-}
-.home-section .btn-bot{
-    position:absolute; 
-    margin-left:-50px;
-    left:50%;
-    width:100px;
-    bottom:0px;
- }
-.mytext {
-    width: 10%;
-}
-fieldset {
-    border: 0;
-}
 @media (max-width: 420px) {
   .sidebar.close .nav-links li .sub-menu{
     display: none;

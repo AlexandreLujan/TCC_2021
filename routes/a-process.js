@@ -1,43 +1,10 @@
-const GridFsStream = require('gridfs-stream');
-const mongoose = require('mongoose');
-
 var express = require('express');
 var router = express.Router();
 var {PythonShell} =require('python-shell');
 
-const connect = mongoose.createConnection(process.env.MONGO_URL_1, {
-    useNewUrlParser: true,
-    useUnifiedTopology: true,
-    useFindAndModify: false,
-    useCreateIndex: true
-})
-
-let gfs;
-
 /* GET automatic process page. */
 router.get('/', global.authenticationMiddleware(), function(req, res, next) {
-    gfs.collection(req.user._id)
-    res.render('a-process', { title: 'Process' });
-});
-
-router.get('/images/', global.authenticationMiddleware(), (req, res) => {
-    gfs.collection(req.user._id)
-    gfs.files.find().toArray((err, files) => {
-        if (!files || files.length === 0) {
-            res.send({ files: false });
-            return
-        }
-        files.map(file => {
-             const imageType = ["image/CR2", "image/RAW", "image/png"];
-            if (imageType.includes(file.contentType)) {
-                file.isImage = true
-            } else {
-                file.isImage = false
-            }
-        })
-        
-        res.send({ files: files });
-    })
+    res.render('a-process', { title: 'Automatic Process' }); 
 })
 
 router.post('/exec', global.authenticationMiddleware(), function(req, res, next) {

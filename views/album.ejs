@@ -3,9 +3,8 @@
 <html lang="en" dir="ltr">
   <head>
     <meta charset="UTF-8">
-    <title> Drop Down Sidebar Menu | CodingLab </title>
-    <link rel="stylesheet" href="../stylesheets/repository.css">
-    <link rel="stylesheet" href="../stylesheets/popup_info.css">
+    <title><%= title %></title>
+    <link rel="stylesheet" href="../stylesheets/album.css">
     <link href='https://unpkg.com/boxicons@2.0.7/css/boxicons.min.css' rel='stylesheet'>
      <meta name="viewport" content="width=device-width, initial-scale=1.0">
    </head>
@@ -103,25 +102,25 @@
   <section class="home-section">
     <div class="home-content">
       <i class='bx bx-menu' ></i>
-      <span class="text">Repository: Unprocessed Photos</span>
+      <span class="text">Album: <%= title %></span>
     </div>
     <p>
-      <div class="container">
-        <div class="row" id="list">
-            <% if(folders){ %>
-              <% for(var folder of folders) { %>
-                  <div class="col">
-                    <a href="/album/album-name/<%=folder%>" style="color:aliceblue"><%= folder %></a>
-                    <form action="/repository/folders/<%= folder %>?_method=DELETE" method="POST">
-                      <button class="btn btn-danger btn-block mt-4">Delete</button>
-                    </form>
-                  </div>
-              <% } %>     
-            <% }else { %>
-              <p class="card card-body text-center display-4 my-4" style="color:aliceblue">No album</p>
-            <% } %>
-        </div>
-      </div>
+        <div class="container">
+            <div class="row" id="list">
+                <% if(photos){ %>
+                  <% for(var photo of photos) { %>
+                        <div class="col-sm card card-body m-3  col-md-2">
+                            <li> <%= photo %></li>
+                          <form action="/album/images/<%= title %>/<%= photo %>?_method=DELETE" method="POST">
+                            <button class="btn btn-danger btn-block mt-4">Delete</button>
+                          </form>
+                        </div>
+                  <% } %>     
+                <% }else { %>
+                  <p class="card card-body text-center display-4 my-4" style="color:aliceblue">Album is empty</p>
+                <% } %>
+            </div>
+          </div>
     </p>
   </section>
 

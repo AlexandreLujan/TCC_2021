@@ -243,7 +243,9 @@
     display: none;
   }
 }
-
+fieldset {
+  border: 0;
+}
 .drop-area {
   border: 2px dashed #bbb;
   border-radius: 5px;

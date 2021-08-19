@@ -27,6 +27,7 @@ var aprocRouter = require('./routes/a-process');
 var faqRouter = require('./routes/faq');
 var feedRouter = require('./routes/feedback');
 var mprocRouter = require('./routes/m-process');
+var albumRouter = require('./routes/album');
 
 var app = express();
 
@@ -66,7 +67,8 @@ app.use('/repository', reposRouter);
 app.use('/a-process', aprocRouter);
 app.use('/m-process', mprocRouter);
 app.use('/faq', faqRouter);
-app.use('/feedback', feedRouter)
+app.use('/feedback', feedRouter);
+app.use('/album/?valid=', albumRouter);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

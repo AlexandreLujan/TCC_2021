@@ -108,14 +108,19 @@
       <div class="drop-area" id="drop">
         <h5>Drop RAW files here</h5>
         <form class="mt-4" action="/upload/photo" method="POST" enctype="multipart/form-data">
-          <input type="file" name="multi-files" multiple id="files" class="form-control-file border"/>
+          <div class="left">
+            <p>Album:</p>
+            <fieldset>
+                <input type="text" placeholder="New-Album-Name" name="nameAlbum" id="nameAlbum">
+            </fieldset>
+            <br>
+            <input type="file" name="multi-files" multiple id="files" class="form-control-file border"/>
           <button type="submit" class="btn btn-primary">Submit</button>
         </form>
       </div> 
       <div id="list" class="mdl-grid"></div>
     </p>
   </section>
-
   <script src="../javascripts/left_bar.js"></script>
 
 </body>
