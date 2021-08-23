@@ -11,6 +11,13 @@ router.get('/', global.authenticationMiddleware(), function(req, res, next) {
   // if not create directory
     fs.mkdirSync(Dir);
   }
+  var pDir = (process.env.PHOTO_DIR).concat(req.user._id);
+  console.log(pDir)
+  // check if directory exists
+  if (!fs.existsSync(pDir)) {
+  // if not create directory
+    fs.mkdirSync(pDir);
+  }
   res.render('account', { title: req.user.username }); 
 });
 

@@ -62,3 +62,6 @@ typings/
 
 #Directory upload user images
 uploads/
+
+#Directory processed user images
+processed_photos/

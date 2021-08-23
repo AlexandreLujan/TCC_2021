@@ -1,8 +1,10 @@
-#source:  https://github.com/wkjarosz/astro-stacker
+#This code is a modified version from the following source: https://github.com/wkjarosz/astro-stacker
 
+#----------------------------------------------Arguments passed to the program-----------------------
 #sys.argv[0] = name of program
-#sys.argv[1] = collection where photos were saved
-#sys.argv[2] = base (false or true) default false
+#-------------Process options-------------------------------------------
+#sys.argv[1] = user id (folder)
+#sys.argv[2] = base frame (false or true) default false
 #sys.argv[3] = base file or empty
 #sys.argv[4] = align (false or true) default true
 #sys.argv[5] = cache (false or true) default true
@@ -10,47 +12,55 @@
 #sys.argv[7] = visible (false or true) default true
 #sys.argv[8] = padding default 0.0
 #sys.argv[9] = thresholded at the percentile [default: 0.85]
-#sys.argv[10] = dark frame
-#sys.argv[11] = flat frame
-#sys.argv[12] = mask frame
-#sys.argv[13] = output name
-#sys.argv[14] = photo
+#sys.argv[10] = dark frame (false or true) default false
+#sys.argv[11] = dark file or empty
+#sys.argv[12] = flat frame (false or true) default false
+#sys.argv[13] = flat file or empty
+#sys.argv[14] = mask frame (false or true) default false
+#sys.argv[15] = mask file or empty
+#sys.argv[16] = output name
+#sys.argv[17] = output format
+#sys.argv[18] = album name
+#--------------RAW Pre-Process-------------------------------------------
+#sys.argv[19] = gamma (linear, sRGB or other) default linear
+#sys.argv[20] = no auto scale (true or false) default false
+#sys.argv[21] = no auto brigth (true or false) default true
+#sys.argv[22] = output bps : 16 or 8 bits, default 16
+#sys.argv[23] = camera white balance (true or false) default false
+#sys.argv[24] = auto white balance (true or false) default false
+#sys.argv[25] = output color (int)
+#sys.argv[26] = demosaic algorithm (int)
+#sys.argv[27] = fbdd noise reduction (int)
+#sys.argv[28] = dcb enhance (int)
+#sys.argv[29] = dcb iterations (int)
+#sys.argv[30] = half size (true or false) default false
+#sys.argv[31] = median filter passes (int)
 
-#python3 test.py 60f8af0c9effd8b046471088 'false' '' 'true' 'true' 'false' 'true' '0' '0.85' '' '' '' 'test' 611046e22427ce564440b2c2 611046e22427ce564440b2c3
+#example : python3 astro_stacker.py 60f87bdd1fb02841a6bcf2eb False null True True False True 0.0 0.85 False null False null False null My-Processed-Photo .tiff folder1 linear False True 16 False False 1 3 0 False 0 False 0
 
-from pymongo import MongoClient
-from bson import ObjectId
-import gridfs
 import sys
+import os
 import cv2
 import numpy as np
 import atexit
 import rawpy
 from tqdm import tqdm, trange
 
-fs, fsi, stabilized_average, divider_mask, imagenumbers, master_dark, master_flat, alignment_mask = None, None, None, None, None, None, None, None
-
-def database():
-    global fs, fsi
-    db = MongoClient('mongodb://localhost:27017/').Unprocessed_Photos
-    fs = gridfs.GridFS( db, sys.argv[1] )
-    
-    db1 = MongoClient('mongodb://localhost:27017/').Processed_Photos
-    fsi = gridfs.GridFS( db1, sys.argv[1] )
+pathDir, stabilized_average, divider_mask, imagenumbers, master_dark, master_flat, alignment_mask = None, None, None, None, None, None, None
 
 def load_master_dark_frame():
     global master_dark
 
-    if (sys.argv[10]):
-        print("Reading master dark frame '{}'...".format(sys.argv[10]))
-        master_dark = cv2.imread(sys.argv[10], cv2.IMREAD_UNCHANGED).astype(np.uint16)
+    if ((sys.argv[10] == 'true') and (sys.argv[11] != 'null')):
+        print("Reading master dark frame '{}'...".format(sys.argv[11]))
+        master_dark = cv2.imread(sys.argv[11], cv2.IMREAD_UNCHANGED).astype(np.uint16)
 
 def load_master_flat_frame():
     global master_flat
 
-    if (sys.argv[11]):
-        print("Reading master flat frame '{}'...".format(sys.argv[11]))
-        master_flat = cv2.imread(sys.argv[11], cv2.IMREAD_UNCHANGED).astype(np.uint16)
+    if ((sys.argv[12] == 'true') and (sys.argv[13] != 'null')):
+        print("Reading master flat frame '{}'...".format(sys.argv[13]))
+        master_flat = cv2.imread(sys.argv[13], cv2.IMREAD_UNCHANGED).astype(np.uint16)
         master_flat[master_flat <= 0] = 1 # prevent divide by zero
 
         max_flat = float(np.amax(master_flat))
@@ -60,63 +70,67 @@ def load_master_flat_frame():
 def load_mask():
     global alignment_mask
 
-    if (sys.argv[12]):
-        print("Reading mask '{}'...".format(sys.argv[12]))
-        alignment_mask = cv2.imread(sys.argv[12], cv2.IMREAD_UNCHANGED).astype(np.uint8)
+    if ((sys.argv[14] == 'true') and (sys.argv[15] != 'null')):
+        print("Reading mask '{}'...".format(sys.argv[15]))
+        alignment_mask = cv2.imread(sys.argv[15], cv2.IMREAD_UNCHANGED).astype(np.uint8)
 
 def load_frame(imgname, pbar):
-    global fs, master_dark, master_flat
+    global pathDir, master_dark, master_flat
 
-    linearGamma = (1,1)
-    sRGBGamma = (2.4,12.92)
+    if(sys.argv[19] == 'linear'):
+        linearGamma = (1,1)
+        setGamma = linearGamma
+    elif(sys.argv[19] == 'sRGB'):
+        sRGBGamma = (2.4,12.92)
+        setGamma = sRGBGamma
 
     calibrate = master_dark is not None and master_flat is not None
 
     black        = 0 if calibrate or sys.argv[6] else None
     whitebalance = [0,0,0,0] if calibrate or sys.argv[6] else None
 
-    params = rawpy.Params(gamma=linearGamma,
-                          no_auto_scale=False,
-                          no_auto_bright=True,
-                          output_bps=16,
-                          use_camera_wb=False,
-                          use_auto_wb=False,
-                          user_wb=None,
-                          output_color=rawpy.ColorSpace.sRGB,
-                          demosaic_algorithm=rawpy.DemosaicAlgorithm.AHD,
-                          fbdd_noise_reduction=rawpy.FBDDNoiseReductionMode.Off,
-                          dcb_enhance=False,
-                          dcb_iterations=0,
-                          half_size=False,
-                          median_filter_passes=0,
+    params = rawpy.Params(gamma=setGamma,
+                          no_auto_scale=(sys.argv[20].lower() == 'true'),
+                          no_auto_bright=(sys.argv[21].lower() == 'true'),
+                          output_bps=int(sys.argv[22]),
+                          use_camera_wb=(sys.argv[23].lower() == 'true'),
+                          use_auto_wb=(sys.argv[24].lower() == 'true'),
+                          user_wb=whitebalance,
+                          output_color=rawpy.ColorSpace(int(sys.argv[25])),
+                          demosaic_algorithm=rawpy.DemosaicAlgorithm(int(sys.argv[26])),
+                          fbdd_noise_reduction=rawpy.FBDDNoiseReductionMode(int(sys.argv[27])),
+                          dcb_enhance=(sys.argv[28].lower() == 'true'),
+                          dcb_iterations=int(sys.argv[29]),
+                          half_size=(sys.argv[30].lower() == 'true'),
+                          median_filter_passes=int(sys.argv[31]),
                           user_black=black)
 
     try:
         pbar.set_postfix(step=f"loading")
-        for data in fs.find({'_id' : ObjectId(imgname)}):
-            with rawpy.imread(data) as raw:
-                if calibrate:
-                    if raw.raw_image.shape != master_dark.shape or raw.raw_image.shape != master_flat.shape:
-                        raise RuntimeError("Flat and dark frames must be the same resolution as each stacked image")
+        data = pathDir + 'uploads/' + str(sys.argv[1]) + '/' + str(sys.argv[18]) + '/' + imgname
+        with rawpy.imread(data) as raw:
+            if calibrate:
+                if raw.raw_image.shape != master_dark.shape or raw.raw_image.shape != master_flat.shape:
+                    raise RuntimeError("Flat and dark frames must be the same resolution as each stacked image")
 
-                    pbar.set_postfix(step=f"calibrating")
+                pbar.set_postfix(step=f"calibrating")
 
-                    dark_removed = (1.0*raw.raw_image - master_dark)
-                    dark_removed[dark_removed < 0] = 0
-                    corrected = dark_removed / master_flat
-                    corrected[corrected < 0] = 0
-                    np.copyto(raw.raw_image, corrected.astype(np.uint16))
+                dark_removed = (1.0*raw.raw_image - master_dark)
+                dark_removed[dark_removed < 0] = 0
+                corrected = dark_removed / master_flat
+                corrected[corrected < 0] = 0
+                np.copyto(raw.raw_image, corrected.astype(np.uint16))
+           
+            if sys.argv[6]:
+                img = np.float32(raw.raw_image.astype(np.uint16) / 65535.0)
+            else:
+                pbar.set_postfix(step=f"demosaicing")
+                img = np.float32(raw.postprocess(params).astype(np.uint16) / 65535.0)
             
-                if sys.argv[6]:
-                    img = np.float32(raw.raw_image.astype(np.uint16) / 65535.0)
-                else:
-                    pbar.set_postfix(step=f"demosaicing")
-                    img = np.float32(raw.postprocess(params).astype(np.uint16) / 65535.0)
-            
-                # crop margin
-                if sys.argv[7]:
-                    s = raw.sizes
-                    img = img[s.top_margin*2:s.raw_height - s.top_margin*2,s.left_margin*2:s.raw_width - s.left_margin*2]                           
+            # crop margin
+            if sys.argv[7]:
+                s = raw.sizes
+                img = img[s.top_margin*2:s.raw_height - s.top_margin*2,s.left_margin*2:s.raw_width - s.left_margin*2]                           
             
         return img
     except rawpy.LibRawError as inst:
@@ -208,26 +222,28 @@ def add_padding(_img, _border_coeff = 0):
 
 
 def exit_handler():
-    global fsi, stabilized_average, divider_mask, imagenumbers
+    global pathDir, stabilized_average, divider_mask, imagenumbers
 
     print(f"Averaged {np.min(divider_mask)}/{np.mean(divider_mask)}/{np.max(divider_mask)} images.")
 
     stabilized_average /= divider_mask # dividing sum by number of images
  
-    outname = str(sys.argv[13])
+    outname = str(sys.argv[16])
 
     print("Saving file " + outname)
     
     stabilized_average[stabilized_average < 0] = 0
     stabilized_average[stabilized_average > 1] = 1
     
-    cv2.imwrite(outname + '.tiff', np.uint16(stabilized_average*65535))
-    cv2.imwrite(outname + '.hdr', stabilized_average)
+    outFormat = str(sys.argv[17])
 
-    fsi.put( open( r'/home/alexandre/TCC_2021/python/' + outname + '.tiff', 'rb')  )
+    pathToSave = pathDir + 'processed_photos/' + str(sys.argv[1]) + '/'
+
+    cv2.imwrite(pathToSave + outname + outFormat, np.uint16(stabilized_average*65535))
+    cv2.imwrite(pathToSave + outname + '.hdr', stabilized_average)
 
 def main():
-    global stabilized_average, divider_mask, imagenumbers
+    global pathDir, stabilized_average, divider_mask, imagenumbers
 
     atexit.register(exit_handler)
     
@@ -242,23 +258,23 @@ def main():
     divider_mask = None
     transformed_image = None
     transformed_mask  = None
+    pathDir = '/home/alexandre/TCC_2021/'
 
     imagenumbers = []
-    database()
     infiles = []
-    inputArgs = sys.argv
-
-    for i in inputArgs[14:]:
-        print ('id:' + i)
-        infiles.append(i)
-
+    albumDir = pathDir + 'uploads/' + str(sys.argv[1]) + '/' + str(sys.argv[18])
+    print(albumDir)
+    with os.scandir(albumDir) as entries:
+        for entry in entries:
+            print(entry.name)
+            infiles.append(entry.name)
+    
     print(f'Photos List {infiles}')
     infiles.sort()
 
     # check if a base frame is specified, otherwise just use the first image in infiles
-    if ((sys.argv[2]) == 'true'):
+    if ((sys.argv[2] == 'true') and (sys.argv[3] != 'null')):
         base = sys.argv[3]
-        print('x')
         idx = next((i for i, x in enumerate(infiles) if x == base), None)
         if idx:
             # if base file is one of the infiles, then make it the first one via circular shift
@@ -285,7 +301,8 @@ def main():
     else:
         print(f"Attempting to stack {numimages} images", "\n  ".join([f"{i:03d}: {s}" for i,s in enumerate(infiles)]), sep="\n  ")
 
-    print(f"{'Will' if (sys.argv[10]) or (sys.argv[11]) else 'Will not'} use flat and dark frames for calibration.")
+    print(f"{'Will' if ((sys.argv[10]) == 'true') else 'Will not'} use dark frames for calibration.")
+    print(f"{'Will' if ((sys.argv[12]) == 'true') else 'Will not'} use flat frames for calibration.")
 
     load_master_dark_frame()
     load_master_flat_frame()

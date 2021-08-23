@@ -35,7 +35,7 @@
         </div>
         <ul class="sub-menu">
           <li><a class="link_name" href="#">Repository</a></li>
-          <li><a href="#">Processed</a></li>
+          <li><a href="/processed">Processed</a></li>
           <li><a href="/repository">Unprocessed</a></li>
         </ul>
       </li>
@@ -111,7 +111,7 @@
             <% if(folders){ %>
               <% for(var folder of folders) { %>
                   <div class="col">
-                    <a href="/album/album-name/<%=folder%>" style="color:aliceblue"><%= folder %></a>
+                    <a href="/repository/album/<%= folder %>" style="color:aliceblue"><%= folder %></a>
                     <form action="/repository/folders/<%= folder %>?_method=DELETE" method="POST">
                       <button class="btn btn-danger btn-block mt-4">Delete</button>
                     </form>

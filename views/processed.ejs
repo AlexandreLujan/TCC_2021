@@ -4,7 +4,7 @@
   <head>
     <meta charset="UTF-8">
     <title><%= title %></title>
-    <link rel="stylesheet" href="../stylesheets/album.css">
+    <link rel="stylesheet" href="../stylesheets/processed.css">
     <link href='https://unpkg.com/boxicons@2.0.7/css/boxicons.min.css' rel='stylesheet'>
      <meta name="viewport" content="width=device-width, initial-scale=1.0">
    </head>
@@ -102,25 +102,25 @@
   <section class="home-section">
     <div class="home-content">
       <i class='bx bx-menu' ></i>
-      <span class="text">Album: <%= title %></span>
+      <span class="text">Processed Photos</span>
     </div>
     <p>
         <div class="container">
             <div class="row" id="list">
-                <% if(photos){ %>
-                  <% for(var photo of photos) { %>
+                <% if(images){ %>
+                  <% for(var image of images) { %>
                         <div class="col-sm card card-body m-3  col-md-2">
-                            <li> <%= photo %></li>
-                            <form action="/repository/download-photo/<%= title %>/<%= photo %>" method="GET">
-                              <button class="btn btn-danger btn-block mt-4">Download</button>
-                            </form> 
-                          <form action="/repository/images/<%= title %>/<%= photo %>?_method=DELETE" method="POST">
+                            <li> <%= image %></li>
+                          <form action="/processed/download/<%= image %>" method="GET">
+                            <button class="btn btn-danger btn-block mt-4">Download</button>
+                          </form> 
+                          <form action="/processed/del-img/<%= image %>?_method=DELETE" method="POST">
                             <button class="btn btn-danger btn-block mt-4">Delete</button>
                           </form>
                         </div>
                   <% } %>     
                 <% }else { %>
-                  <p class="card card-body text-center display-4 my-4" style="color:aliceblue">Album is empty</p>
+                  <p class="card card-body text-center display-4 my-4" style="color:aliceblue">Folder is empty</p>
                 <% } %>
             </div>
           </div>

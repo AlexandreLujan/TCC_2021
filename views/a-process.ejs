@@ -34,7 +34,7 @@
         </div>
         <ul class="sub-menu">
           <li><a class="link_name" href="#">Repository</a></li>
-          <li><a href="#">Processed</a></li>
+          <li><a href="/processed">Processed</a></li>
           <li><a href="/repository">Unprocessed</a></li>
         </ul>
       </li>
@@ -105,13 +105,83 @@
       <span class="text">Automatic Process</span>
     </div>
     <p>
-        <form action="/a-process/exec" method="POST">
-            <button type="submit" class="btn btn-default">Process</button>
+        <form action="/a-process/a-exec" method="POST">
+            <div class="left">
+                <p>Base Frame:</p>
+                <fieldset id="baseFrame">
+                    <input type="radio" value="True" name="baseFrame">
+                    <label for="baseFrame">True</label>
+                    <input type="radio" value="False" name="baseFrame" checked>
+                    <label for="baseFrame">False</label>
+                </fieldset>
+                <br>
+                <p>Dark Frame:</p>
+                <fieldset id="darkFrame">
+                    <input type="radio" value="True" name="darkFrame">
+                    <label for="darkFrame">True</label>
+                    <input type="radio" value="False" name=darkFrame checked>
+                    <label for="darkFrame">False</label>
+                </fieldset>
+                <br>
+                <p>Flat Frame:</p>
+                <fieldset id="flatFrame">
+                    <input type="radio" value="True" name="flatFrame">
+                    <label for="flatFrame">True</label>
+                    <input type="radio" value="False" name="flatFrame" checked>
+                    <label for="flatFrame">False</label>
+                </fieldset>
+                <br>
+                <p>Output Name:</p>
+                <fieldset id="outputName">
+                    <input type="text" name="outputName"value="My-Processed-Photo" placeholder="My-Processed-Photo">
+                </fieldset>
+                <br>
+                <p>Image Format</p>
+                <fieldset>
+                    <select name="imageFormat" id="imageFormat">
+                        <option value=".tiff" selected>TIFF</option>
+                        <option value=".jpg">JPG</option>
+                        <option value=".png" >PNG</option>
+                    </select>
+                </fieldset>  
+            </div>
+            <div class="center">
+                <p>Color Space</p>
+                <fieldset>
+                    <select name="colorSpace" id="colorSpace">
+                        <option value="2">Adobe</option>
+                        <option value="4">ProPhoto</option>
+                        <option value="3">Wide</option>
+                        <option value="5">XYZ</option>
+                        <option value="0">raw</option>
+                        <option value="1" selected>sRGB</option>
+                    </select>
+                </fieldset>    
+            </div>
+            <div class = "right">
+              <p>Choose an album:</p>
+              <div class="row">
+                <fieldset id="album">
+                  <% if(folders){ %>
+                    <% for(var folder of folders) { %>
+                      <div class="col-sm card card-body m-3  col-md-2">
+                        <input type="radio" value="<%=folder%>" name="album">     
+                        <label for="album"><%= folder %></label>
+                      </div>                   
+                    <% } %>     
+                  <% }else { %>
+                    <p class="card card-body text-center display-4 my-4" style="color:aliceblue">No album</p>
+                  <% } %>
+                </fieldset>
+              </div>  
+            </div>
+          <button type="submit" class="btn-bot">Process</button>
         </form>
     </p>
   </section>
 
   <script src="../javascripts/left_bar.js"></script>
- 
+  
+   
 </body>
 </html>
