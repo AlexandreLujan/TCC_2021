@@ -13,12 +13,12 @@ router.get('/', global.authenticationMiddleware(), function(req, res, next) {
         }
         //no folder found
         if (!folders || folders.length === 0) {
-            res.render('repository', { folders: false, title: req.user.username });
+            res.render('repository', { folders: false, user: req.user.username });
             return
         }
         //listing all folders
         console.log(folders);
-        res.render('repository', { folders: folders, title: req.user.username });
+        res.render('repository', { folders: folders, user: req.user.username });
     });
 });
 

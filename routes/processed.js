@@ -13,11 +13,11 @@ router.get('/', global.authenticationMiddleware(), function(req, res) {
         }
         //no folder found
         if (!images || images.length === 0) {
-            res.render('processed', { images: false, title: "Processed Photos" });
+            res.render('processed', { images: false, user: req.user.username });
             return
         }
         //listing all photos
-        res.render('processed', { images: images, title: "Processed Photos" });
+        res.render('processed', { images: images, user: req.user.username });
     });
 });
 

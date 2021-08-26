@@ -238,8 +238,23 @@
   font-size: 26px;
   font-weight: 600;
 }
+.flex-container {
+  display: flex;
+  flex-wrap: wrap;
+  font-size: 18px;
+  text-align: left;
+}
+.flex-item {
+  background-color: #202020;
+  color: white;
+  padding: 10px;
+  flex: 25%;
+}
 @media (max-width: 420px) {
   .sidebar.close .nav-links li .sub-menu{
     display: none;
+  }
+  .flex-container {
+    flex-direction: column;
   }
 }

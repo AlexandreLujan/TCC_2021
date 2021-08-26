@@ -4,7 +4,7 @@ const upload = require("../middleware/mw-upload");
 
 /* GET upload page. */
 router.get('/', global.authenticationMiddleware(), function(req, res, next) {
-  res.render('upload', { title: req.user.username });
+  res.render('upload', { user: req.user.username });
 });
 
 router.post('/photo', global.authenticationMiddleware(), async (req, res) => {

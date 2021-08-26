@@ -14,12 +14,12 @@ router.get('/', global.authenticationMiddleware(), function(req, res, next) {
         }
         //no folder found
         if (!folders || folders.length === 0) {
-            res.render('m-process', { folders: false, title: 'Manual Process' });
+            res.render('m-process', { folders: false, user: req.user.username });
             return
         }
         //listing all folders
         console.log(folders);
-        res.render('m-process', { folders: folders, title: 'Manual Process' });
+        res.render('m-process', { folders: folders, user: req.user.username });
     });
 });
 

@@ -83,6 +83,14 @@ def load_frame(imgname, pbar):
     elif(sys.argv[19] == 'sRGB'):
         sRGBGamma = (2.4,12.92)
         setGamma = sRGBGamma
+    elif(sys.argv[19] == 'Default'):
+        sRGBGamma = (2.222, 4.5)
+        setGamma = sRGBGamma
+
+    if(sys.argv[32] == 'Default'):
+        chromaticAberration = (1,1)
+    elif(sys.argv[32] == 'Other'):
+        chromaticAberration = sys.argv[32]
 
     calibrate = master_dark is not None and master_flat is not None
 
@@ -103,6 +111,12 @@ def load_frame(imgname, pbar):
                           dcb_iterations=int(sys.argv[29]),
                           half_size=(sys.argv[30].lower() == 'true'),
                           median_filter_passes=int(sys.argv[31]),
+                          chromatic_aberration=chromaticAberration,
+                          bad_pixels_path=None,
+                          user_sat=int(sys.argv[33]),
+                          highlight_mode=int(sys.argv[34]),
+                          exp_shift=float(sys.argv[35]),
+                          exp_preserve_highlights=float(sys.argv[36]),
                           user_black=black)
 
     try:

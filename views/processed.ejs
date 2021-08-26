@@ -3,130 +3,98 @@
 <html lang="en" dir="ltr">
   <head>
     <meta charset="UTF-8">
-    <title><%= title %></title>
+    <title>Processed Photos</title>
     <link rel="stylesheet" href="../stylesheets/processed.css">
     <link href='https://unpkg.com/boxicons@2.0.7/css/boxicons.min.css' rel='stylesheet'>
      <meta name="viewport" content="width=device-width, initial-scale=1.0">
    </head>
 <body>
-  <div class="sidebar close">
+  <div class="sidebar">
     <div class="logo-details">
-      <i class='bx bxl-c-plus-plus'></i>
-      <span class="logo_name">CodingLab</span>
+      <div class="logo_name">Luna: AstroTools</div>
+      <i class='bx bxs-moon' id="btn" ></i>
     </div>
-    <ul class="nav-links">
+    <ul class="nav-list">
       <li>
         <a href="/account">
-          <i class='bx bx-grid-alt' ></i>
-          <span class="link_name">Dashboard</span>
-        </a>
-        <ul class="sub-menu blank">
-          <li><a class="link_name" href="/account">Dashboard</a></li>
-        </ul>
-      </li>
-      <li>
-        <div class="iocn-link">
-          <a href="#">
-            <i class='bx bx-folder' ></i>
-            <span class="link_name">Repository</span>
-          </a>
-          <i class='bx bxs-chevron-down arrow' ></i>
-        </div>
-        <ul class="sub-menu">
-          <li><a class="link_name" href="#">Repository</a></li>
-          <li><a href="/processed">Processed</a></li>
-          <li><a href="/repository">Unprocessed</a></li>
-        </ul>
-      </li>
-      <li>
-        <div class="iocn-link">
-          <a href="#">
-            <i class='bx bx-play-circle'></i>
-            <span class="link_name">Process</span>
-          </a>
-          <i class='bx bxs-chevron-down arrow' ></i>
-        </div>
-        <ul class="sub-menu">
-          <li><a class="link_name" href="#">Process</a></li>
-          <li><a href="/a-process">Automatic</a></li>
-          <li><a href="/m-process">Manual</a></li>
-        </ul>
-      </li>
-      <li>
-        <a href="/upload">
-          <i class='bx bx-cloud-upload'></i>
-          <span class="link_name">Upload Photos</span>
-        </a>
-        <ul class="sub-menu blank">
-          <li><a class="link_name" href="/upload">Upload Photos</a></li>
-        </ul>
-      </li>
-      <li>
-        <div class="iocn-link">
-          <a href="#">
-            <i class='bx bx-wrench' ></i>
-            <span class="link_name">Tools</span>
-          </a>
-          <i class='bx bxs-chevron-down arrow' ></i>
-        </div>
-        <ul class="sub-menu">
-          <li><a class="link_name" href="#">Tools</a></li>
-          <li><a href="#">Stacking</a></li>
-          <li><a href="#">Fix Pixels</a></li>
-          <li><a href="#">Edit Colors</a></li>
-        </ul>
-      </li>
-      <li>
-        <a href="#">
           <i class='bx bxs-user-account' ></i>
-          <span class="link_name">Account</span>
+          <span class="links_name">Account</span>
         </a>
-        <ul class="sub-menu blank">
-          <li><a class="link_name" href="#">Account</a></li>
-        </ul>
+        <span class="tooltip">Account</span>
       </li>
-    <li>
-    <div class="profile-details">
-      <div class="profile-content">
-        <img src="" alt="">
-      </div>
-      <div class="name-job">
-        <div class="profile_name"><%= title %></div>
-        <div class="job">User</div>
-      </div>
-      <i class='bx bx-log-out' ></i>
-    </div>
-  </li>
-</ul>
+      <li>
+        <a href="/processed">
+          <i class='bx bx-image' ></i>
+          <span class="links_name">Processed Photos</span>
+        </a>
+        <span class="tooltip">Processed Photos</span>
+     </li>
+     <li>
+      <a href="/repository">
+        <i class='bx bx-folder' ></i>
+        <span class="links_name">Unprocessed Photos</span>
+      </a>
+      <span class="tooltip">Unprocessed Photos</span>
+     </li>
+     <li>
+      <a href="/upload">
+        <i class='bx bx-cloud-upload'></i>
+        <span class="links_name">Upload Photos</span>
+      </a>
+      <span class="tooltip">Upload Photos</span>
+     </li>
+     <li>
+      <a href="/a-process">
+        <i class='bx bx-fast-forward-circle' ></i>
+        <span class="links_name">Automatic Process</span>
+      </a>
+      <span class="tooltip">Automatic Process</span>
+     </li>
+     <li>
+      <a href="/m-process">
+        <i class='bx bx-play-circle'></i>
+        <span class="links_name">Manual Process</span>
+      </a>
+      <span class="tooltip">Manual Process</span>
+     </li>
+     <li class="profile">
+         <div class="profile-details">
+            <div class="name_job">
+              <div class="name">User</div>
+              <div class="job"><%= user %></div>
+            </div>
+         </div>
+         <form id="LogOut" action="/login/logoff" method="POST">
+          <a href="#" onclick="document.getElementById('LogOut').submit();">
+            <i class='bx bx-log-out' id="log_out" ></i>
+          </a>
+        </form>
+      </li>
+    </ul>
   </div>
   <section class="home-section">
-    <div class="home-content">
-      <i class='bx bx-menu' ></i>
-      <span class="text">Processed Photos</span>
-    </div>
+    <div class="text">Processed Photos</div>
     <p>
-        <div class="container">
-            <div class="row" id="list">
-                <% if(images){ %>
-                  <% for(var image of images) { %>
-                        <div class="col-sm card card-body m-3  col-md-2">
-                            <li> <%= image %></li>
-                          <form action="/processed/download/<%= image %>" method="GET">
-                            <button class="btn btn-danger btn-block mt-4">Download</button>
-                          </form> 
-                          <form action="/processed/del-img/<%= image %>?_method=DELETE" method="POST">
-                            <button class="btn btn-danger btn-block mt-4">Delete</button>
-                          </form>
-                        </div>
-                  <% } %>     
-                <% }else { %>
-                  <p class="card card-body text-center display-4 my-4" style="color:aliceblue">Folder is empty</p>
-                <% } %>
+      <div class="flex-container">
+        <% if(images){ %>
+          <% for(var image of images) { %>
+            <div class="flex-item">
+              <li> <%= image %></li>
+              <form action="/processed/download/<%= image %>" method="GET">
+                <button class="btn btn-danger btn-block mt-4">Download</button>
+              </form> 
+              <form action="/processed/del-img/<%= image %>?_method=DELETE" method="POST">
+                <button class="btn btn-danger btn-block mt-4">Delete</button>
+              </form>
             </div>
-          </div>
+          <% } %>     
+        <% }else { %>
+          <p class="card card-body text-center display-4 my-4" style="color:aliceblue">Folder is empty</p>
+        <% } %>
+      </div>
     </p>
   </section>
-
+  
   <script src="../javascripts/left_bar.js"></script>
 
 </body>

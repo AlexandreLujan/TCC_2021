@@ -18,7 +18,7 @@ router.get('/', global.authenticationMiddleware(), function(req, res, next) {
   // if not create directory
     fs.mkdirSync(pDir);
   }
-  res.render('account', { title: req.user.username }); 
+  res.render('account', { user: req.user.username }); 
 });
 
 module.exports = router;

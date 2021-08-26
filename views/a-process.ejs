@@ -3,163 +3,145 @@
 <html lang="en" dir="ltr">
   <head>
     <meta charset="UTF-8">
-    <title> Drop Down Sidebar Menu | CodingLab </title>
+    <title> Automatic Process </title>
     <link rel="stylesheet" href="../stylesheets/a-process.css">
     <link href='https://unpkg.com/boxicons@2.0.7/css/boxicons.min.css' rel='stylesheet'>
      <meta name="viewport" content="width=device-width, initial-scale=1.0">
    </head>
 <body>
-  <div class="sidebar close">
+  <div class="sidebar">
     <div class="logo-details">
-      <i class='bx bxl-c-plus-plus'></i>
-      <span class="logo_name">CodingLab</span>
+      <div class="logo_name">Luna: AstroTools</div>
+      <i class='bx bxs-moon' id="btn" ></i>
     </div>
-    <ul class="nav-links">
+    <ul class="nav-list">
       <li>
         <a href="/account">
-          <i class='bx bx-grid-alt' ></i>
-          <span class="link_name">Dashboard</span>
-        </a>
-        <ul class="sub-menu blank">
-          <li><a class="link_name" href="/account">Dashboard</a></li>
-        </ul>
-      </li>
-      <li>
-        <div class="iocn-link">
-          <a href="#">
-            <i class='bx bx-folder' ></i>
-            <span class="link_name">Repository</span>
-          </a>
-          <i class='bx bxs-chevron-down arrow' ></i>
-        </div>
-        <ul class="sub-menu">
-          <li><a class="link_name" href="#">Repository</a></li>
-          <li><a href="/processed">Processed</a></li>
-          <li><a href="/repository">Unprocessed</a></li>
-        </ul>
-      </li>
-      <li>
-        <div class="iocn-link">
-          <a href="#">
-            <i class='bx bx-play-circle'></i>
-            <span class="link_name">Process</span>
-          </a>
-          <i class='bx bxs-chevron-down arrow' ></i>
-        </div>
-        <ul class="sub-menu">
-          <li><a class="link_name" href="#">Process</a></li>
-          <li><a href="/a-process">Automatic</a></li>
-          <li><a href="/m-process">Manual</a></li>
-        </ul>
-      </li>
-      <li>
-        <a href="/upload">
-          <i class='bx bx-cloud-upload'></i>
-          <span class="link_name">Upload Photos</span>
-        </a>
-        <ul class="sub-menu blank">
-          <li><a class="link_name" href="/upload">Upload Photos</a></li>
-        </ul>
-      </li>
-      <li>
-        <div class="iocn-link">
-          <a href="#">
-            <i class='bx bx-wrench' ></i>
-            <span class="link_name">Tools</span>
-          </a>
-          <i class='bx bxs-chevron-down arrow' ></i>
-        </div>
-        <ul class="sub-menu">
-          <li><a class="link_name" href="#">Tools</a></li>
-          <li><a href="#">Stacking</a></li>
-          <li><a href="#">Fix Pixels</a></li>
-          <li><a href="#">Edit Colors</a></li>
-        </ul>
-      </li>
-      <li>
-        <a href="#">
           <i class='bx bxs-user-account' ></i>
-          <span class="link_name">Account</span>
+          <span class="links_name">Account</span>
         </a>
-        <ul class="sub-menu blank">
-          <li><a class="link_name" href="#">Account</a></li>
-        </ul>
+        <span class="tooltip">Account</span>
       </li>
-    <li>
-    <div class="profile-details">
-      <div class="profile-content">
-        <img src="" alt="">
-      </div>
-      <div class="name-job">
-        <div class="profile_name"><%= title %></div>
-        <div class="job">User</div>
-      </div>
-      <i class='bx bx-log-out' ></i>
-    </div>
-  </li>
-</ul>
+      <li>
+        <a href="/processed">
+          <i class='bx bx-image' ></i>
+          <span class="links_name">Processed Photos</span>
+        </a>
+        <span class="tooltip">Processed Photos</span>
+     </li>
+     <li>
+      <a href="/repository">
+        <i class='bx bx-folder' ></i>
+        <span class="links_name">Unprocessed Photos</span>
+      </a>
+      <span class="tooltip">Unprocessed Photos</span>
+     </li>
+     <li>
+      <a href="/upload">
+        <i class='bx bx-cloud-upload'></i>
+        <span class="links_name">Upload Photos</span>
+      </a>
+      <span class="tooltip">Upload Photos</span>
+     </li>
+     <li>
+      <a href="/a-process">
+        <i class='bx bx-fast-forward-circle' ></i>
+        <span class="links_name">Automatic Process</span>
+      </a>
+      <span class="tooltip">Automatic Process</span>
+     </li>
+     <li>
+      <a href="/m-process">
+        <i class='bx bx-play-circle'></i>
+        <span class="links_name">Manual Process</span>
+      </a>
+      <span class="tooltip">Manual Process</span>
+     </li>
+     <li class="profile">
+         <div class="profile-details">
+            <div class="name_job">
+              <div class="name">User</div>
+              <div class="job"><%= user %></div>
+            </div>
+         </div>
+         <form id="LogOut" action="/login/logoff" method="POST">
+          <a href="#" onclick="document.getElementById('LogOut').submit();">
+            <i class='bx bx-log-out' id="log_out" ></i>
+          </a>
+        </form>
+      </li>
+    </ul>
   </div>
   <section class="home-section">
-    <div class="home-content">
-      <i class='bx bx-menu' ></i>
-      <span class="text">Automatic Process</span>
-    </div>
+    <div class="text">Automatic Process</div>
     <p>
-        <form action="/a-process/a-exec" method="POST">
-            <div class="left">
-                <p>Base Frame:</p>
-                <fieldset id="baseFrame">
-                    <input type="radio" value="True" name="baseFrame">
-                    <label for="baseFrame">True</label>
-                    <input type="radio" value="False" name="baseFrame" checked>
-                    <label for="baseFrame">False</label>
-                </fieldset>
-                <br>
-                <p>Dark Frame:</p>
-                <fieldset id="darkFrame">
-                    <input type="radio" value="True" name="darkFrame">
-                    <label for="darkFrame">True</label>
-                    <input type="radio" value="False" name=darkFrame checked>
-                    <label for="darkFrame">False</label>
-                </fieldset>
-                <br>
-                <p>Flat Frame:</p>
-                <fieldset id="flatFrame">
-                    <input type="radio" value="True" name="flatFrame">
-                    <label for="flatFrame">True</label>
-                    <input type="radio" value="False" name="flatFrame" checked>
-                    <label for="flatFrame">False</label>
-                </fieldset>
-                <br>
-                <p>Output Name:</p>
-                <fieldset id="outputName">
-                    <input type="text" name="outputName"value="My-Processed-Photo" placeholder="My-Processed-Photo">
-                </fieldset>
-                <br>
-                <p>Image Format</p>
-                <fieldset>
-                    <select name="imageFormat" id="imageFormat">
-                        <option value=".tiff" selected>TIFF</option>
-                        <option value=".jpg">JPG</option>
-                        <option value=".png" >PNG</option>
-                    </select>
-                </fieldset>  
-            </div>
-            <div class="center">
-                <p>Color Space</p>
-                <fieldset>
-                    <select name="colorSpace" id="colorSpace">
-                        <option value="2">Adobe</option>
-                        <option value="4">ProPhoto</option>
-                        <option value="3">Wide</option>
-                        <option value="5">XYZ</option>
-                        <option value="0">raw</option>
-                        <option value="1" selected>sRGB</option>
-                    </select>
-                </fieldset>    
-            </div>
-            <div class = "right">
-              <p>Choose an album:</p>
+      <form action="/m-process/m-exec" method="POST">
+        <div class="flex-container">
+          <div class="flex-item-1">
+            <p>Use a Base Frame:</p>
+            <fieldset id="baseFrame">
+              <input type="radio" value="True" name="baseFrame">
+              <label for="baseFrame">True</label>
+              <input type="radio" value="False" name="baseFrame" checked>
+              <label for="baseFrame">False</label>
+              <input type="text" id="baseName" name="baseName" value="null" placeholder="Photo Name">
+            </fieldset>
+            <br>
+            <p>Use a Dark Frame:</p>
+            <fieldset id="darkFrame">
+              <input type="radio" value="True" name="darkFrame">
+              <label for="darkFrame">True</label>
+              <input type="radio" value="False" name=darkFrame checked>
+              <label for="darkFrame">False</label>
+              <input type="text" id="darkName" name="darkName" value="null" placeholder="Dark Frame Name">
+            </fieldset>
+          </div>
+          <div class="flex-item-2">
+            <p>Use a Flat Frame:</p>
+            <fieldset id="flatFrame">
+              <input type="radio" value="True" name="flatFrame">
+              <label for="flatFrame">True</label>
+              <input type="radio" value="False" name="flatFrame" checked>
+              <label for="flatFrame">False</label>
+              <input type="text" id="flatName" name="flatName" value="null" placeholder="Flat Frame Name">
+            </fieldset>
+            <br>
+            <p>Use a Mask Frame:</p>
+            <fieldset id="maskFrame">
+              <input type="radio" value="True" name="maskFrame">
+              <label for="maskFrame">True</label>
+              <input type="radio" value="False" name="maskFrame" checked>
+              <label for="maskFrame">False</label>
+              <input type="text" id="maskName" name="maskName" value="null" placeholder="Mask Frame Name">
+            </fieldset>
+            <br>
+            <p>Output Name:</p>
+            <fieldset id="outputName">
+              <input type="text" name="outputName" value="My-Processed-Photo" placeholder="My-Processed-Photo">
+            </fieldset>
+            <br>
+            <p>Image Format</p>
+            <fieldset>
+              <select name="imageFormat" id="imageFormat">
+                <option value=".tiff" selected>TIFF</option>
+                <option value=".jpg">JPG</option>
+                <option value=".png" >PNG</option>
+              </select>
+            </fieldset>
+            <p>Color Space</p>
+            <fieldset>
+              <select name="colorSpace" id="colorSpace">
+                <option value="2">Adobe</option>
+                <option value="4">ProPhoto</option>
+                <option value="3">Wide</option>
+                <option value="5">XYZ</option>
+                <option value="0">raw</option>
+                <option value="1" selected>sRGB</option>
+              </select>
+            </fieldset>    
+          </div>
+          <div class="flex-item-4">
+            <p>Choose an album:</p>
               <div class="row">
                 <fieldset id="album">
                   <% if(folders){ %>
@@ -173,15 +155,55 @@
                     <p class="card card-body text-center display-4 my-4" style="color:aliceblue">No album</p>
                   <% } %>
                 </fieldset>
-              </div>  
-            </div>
-          <button type="submit" class="btn-bot">Process</button>
-        </form>
+              </div>
+            <button type="submit" >Process</button>
+          </div> 
+        </div>
+      </form>
     </p>
   </section>
-
-  <script src="../javascripts/left_bar.js"></script>
   
-   
+  <script src="../javascripts/left_bar.js"></script>
+  <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+  <script>
+    $('input[name="baseFrame"]').click(function(e) {
+      if(e.target.value === 'True') {
+        $('#baseName').show();
+      } else {
+        $('#baseName').hide();
+      }
+    })
+    $('#baseName').hide();
+  </script>
+  <script>
+    $('input[name="darkFrame"]').click(function(e) {
+      if(e.target.value === 'True') {
+        $('#darkName').show();
+      } else {
+        $('#darkName').hide();
+      }
+    })
+    $('#darkName').hide();
+  </script>
+  <script>
+    $('input[name="flatFrame"]').click(function(e) {
+      if(e.target.value === 'True') {
+        $('#flatName').show();
+      } else {
+        $('#flatName').hide();
+      }
+    })
+    $('#flatName').hide();
+  </script>
+  <script>
+    $('input[name="maskFrame"]').click(function(e) {
+      if(e.target.value === 'True') {
+        $('#maskName').show();
+      } else {
+        $('#maskName').hide();
+      }
+    })
+    $('#maskName').hide();
+  </script>
 </body>
 </html>
