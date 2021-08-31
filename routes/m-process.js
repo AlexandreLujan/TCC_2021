@@ -2,6 +2,7 @@ var express = require('express');
 var router = express.Router();
 var {PythonShell} =require('python-shell');
 const fs = require('fs');
+var photoFormat;
 
 /* GET Manual process page. */
 router.get('/', global.authenticationMiddleware(), function(req, res, next) {
@@ -30,7 +31,10 @@ router.post('/m-exec', global.authenticationMiddleware(), function(req, res, nex
                 req.body.imageFormat, req.body.album, req.body.gamma, req.body.noAutoScale, req.body.noAutoBright,
                 req.body.outputBPS, req.body.cameraWB, req.body.autoWB, req.body.colorSpace,
                 req.body.demosaicAlgorithm, req.body.fbddNoiseReduction, req.body.dcbEnhance,
-                req.body.dcbIterations, req.body.halfSize, req.body.medianFilter);
+                req.body.dcbIterations, req.body.halfSize, req.body.medianFilter,
+                req.body.redScale, req.body.blueScale, req.body.saturation, req.body.highlight);
+    
+    photoFormat = req.body.imageFormat;
 
     // //Here are the option object in which arguments can be passed for the python_test.js.
     let options = {
@@ -45,17 +49,52 @@ router.post('/m-exec', global.authenticationMiddleware(), function(req, res, nex
             req.body.imageFormat, req.body.album, req.body.gamma, req.body.noAutoScale, req.body.noAutoBright,
             req.body.outputBPS, req.body.cameraWB, req.body.autoWB, req.body.colorSpace,
             req.body.demosaicAlgorithm, req.body.fbddNoiseReduction, req.body.dcbEnhance,
-            req.body.dcbIterations, req.body.halfSize, req.body.medianFilter] 
+            req.body.dcbIterations, req.body.halfSize, req.body.medianFilter,
+            req.body.redScale, req.body.blueScale, req.body.saturation, req.body.highlight] 
     };
       
     PythonShell.run('astro_stacker.py', options, function (err, result){
         if (err) throw err;
-        // result is an array consisting of messages collected 
-        //during execution of script.
         console.log('result: ', result.toString());
-        //console.log('results: %j', result);
-        //res.send(result.toString())
-    }); 
-}); 
+        res.redirect("/m-process/preview/" + req.body.outputName);
+    });
+});
+
+/* GET preview page. */
+router.get('/preview/:photoName', global.authenticationMiddleware(), function(req, res, next) {
+    var imagePreview = (req.params.photoName).concat(".png");
+    var previewDir = [(process.env.PREVIEW_DIR), "processed_photos/", req.user._id, "/", imagePreview].join('');
+    fs.access(previewDir, fs.F_OK, (err) => {
+        if (err) {
+            return console.log('Unable to get the preview image: ' + imagePreview + err);
+        }
+        res.render('preview', { user: req.user.username, image: req.params.photoName, userId: req.user._id }); 
+    });
+});
+
+/* DELETE processed photo and preview */
+router.delete('/discard/:image', global.authenticationMiddleware(), (req, res) => {
+    var discardPreview = (req.params.image).concat(".png");
+    var previewImg = [(process.env.PREVIEW_DIR), "processed_photos/", req.user._id, "/", discardPreview].join('');
+    fs.unlink(previewImg, (err) => {
+        if (err) {
+            throw err;
+        }
+        console.log(`${previewImg} preview has been deleted!`);
+    });
+    var processedDir = [(process.env.PHOTO_DIR), req.user._id, "/", req.params.image, photoFormat].join('');
+    fs.unlink(processedDir, (err) => {
+        if (err) {
+            throw err;
+        }
+        console.log(`${processedDir} processed photo has been deleted!`);
+    });
+    res.redirect('/m-process');
+});
+
+/* SAVE photo (already saved, just redirect to processed) */
+router.get('/save', global.authenticationMiddleware(), (req, res) => {
+    res.redirect('/processed');
+});
 
 module.exports = router;

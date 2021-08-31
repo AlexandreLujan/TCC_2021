@@ -18,6 +18,20 @@ router.get('/', global.authenticationMiddleware(), function(req, res, next) {
   // if not create directory
     fs.mkdirSync(pDir);
   }
+  var previewProcess = [(process.env.PREVIEW_DIR), "processed_photos/", req.user._id].join('');
+  console.log(previewProcess)
+  // check if directory exists
+  if (!fs.existsSync(previewProcess)) {
+  // if not create directory
+    fs.mkdirSync(previewProcess);
+  }
+  var previewUnprocess = [(process.env.PREVIEW_DIR), "unprocessed_photos/", req.user._id].join('');
+  console.log(previewUnprocess)
+  // check if directory exists
+  if (!fs.existsSync(previewUnprocess)) {
+  // if not create directory
+    fs.mkdirSync(previewUnprocess);
+  }
   res.render('account', { user: req.user.username }); 
 });
 

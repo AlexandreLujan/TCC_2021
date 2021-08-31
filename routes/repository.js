@@ -45,12 +45,12 @@ router.get('/album/:folder', global.authenticationMiddleware(), function(req, re
         }
         //no folder found
         if (!photos || photos.length === 0) {
-            res.render('album', { photos: false, title: req.params.folder });
+            res.render('album', { photos: false, title: req.params.folder, user: req.user.username });
             return
         }
         //listing all photos
         console.log(photos);
-        res.render('album', { photos: photos, title: req.params.folder });
+        res.render('album', { photos: photos, title: req.params.folder, user: req.user.username});
     });
 });
 
@@ -66,7 +66,6 @@ router.get('/download-photo/:title/:photo', global.authenticationMiddleware(), (
         res.download(photoPath, req.params.image); 
     })
 })
-
 
 /* DELETE photo */
 router.delete('/images/:title/:photo', global.authenticationMiddleware(), (req, res) => {

@@ -137,8 +137,7 @@
               <label for="darkFrame">False</label>
               <input type="text" id="darkName" name="darkName" value="null" placeholder="Dark Frame Name">
             </fieldset>
-          </div>
-          <div class="flex-item-2">
+            <br>
             <p>Use a Flat Frame:</p>
             <fieldset id="flatFrame">
               <input type="radio" value="True" name="flatFrame">
@@ -156,7 +155,8 @@
               <label for="maskFrame">False</label>
               <input type="text" id="maskName" name="maskName" value="null" placeholder="Mask Frame Name">
             </fieldset>
-            <br>
+          </div>
+          <div class="flex-item-2">
             <p>Output Name:</p>
             <fieldset id="outputName">
               <input type="text" name="outputName" value="My-Processed-Photo" placeholder="My-Processed-Photo">
@@ -170,7 +170,7 @@
                 <option value=".png" >PNG</option>
               </select>
             </fieldset>
-            <br>  
+            <br> 
             <p>Gamma</p>
             <fieldset>
               <select name="gamma" id="gamma">
@@ -210,15 +210,6 @@
               <input type="radio" value="False" name="noAutoBright">
               <label for="noAutoBright">False</label>
             </fieldset>
-          </div>
-          <div class="flex-item-3">
-            <p>Output bps</p>
-            <fieldset id="outputBPS">
-              <input type="radio" value="8" name="outputBPS">
-              <label for="outputBPS">8</label>
-              <input type="radio" value="16" name="outputBPS" checked>
-              <label for="outputBPS">16</label>
-            </fieldset>
             <br>
             <p>Use Camera White Balance</p>
             <fieldset id="cameraWB">
@@ -246,8 +237,9 @@
                 <option value="0">raw</option>
                 <option value="1" selected>sRGB</option>
               </select>
-            </fieldset>    
-            <br>
+            </fieldset> 
+          </div>
+          <div class="flex-item-3">
             <p>Demosaic Algorithm</p>
             <fieldset>
               <select name="demosaicAlgorithm" id="demosaicAlgorithm">
@@ -301,6 +293,27 @@
             <fieldset id="medianFilter">
               <input type="text" name="medianFilter" value="0" placeholder="0" class="mytext">
             </fieldset>
+            <br>
+            <p>Chromatic Aberration:</p>
+            <fieldset>
+              <input type="text" id="redScale" name="redScale" value="1" placeholder="1" class="mytext">
+              <input type="text" id="blueScale" name="blueScale" value="1" placeholder="1" class="mytext">
+            </fieldset>
+            <br>
+            <p>Saturation adjustment:</p>
+            <fieldset id="saturation">
+              <input type="text" name="saturation" value="0" placeholder="0" class="mytext">
+            </fieldset>
+            <br>
+            <p>Highlight Mode:</p>
+            <fieldset>
+              <select name="highlight" id="highlight">
+                <option value="2">Blend</option>
+                <option value="0">Clip</option>
+                <option value="1">Ignore</option>
+                <option value="5" selected>Default</option>
+              </select>
+            </fieldset> 
           </div>
           <div class="flex-item-4">
             <p>Choose an album:</p>
@@ -318,10 +331,15 @@
                   <% } %>
                 </fieldset>
               </div>
-            <button type="submit" >Process</button>
+            <button type="submit" onclick="hideElement()">Process</button>
           </div> 
         </div>
       </form>
+      <div class="demo-container">
+        <div class="progress-bar">
+          <div class="progress-bar-value"></div>
+        </div>
+      </div>
     </p>
   </section>
   
@@ -367,5 +385,13 @@
     })
     $('#maskName').hide();
   </script>
-</body>
+  <script>
+    function hideElement() {
+      element = document.querySelector('.flex-container');
+      element.style.visibility = 'hidden';
+      element = document.querySelector('.demo-container');
+      element.style.visibility = 'visible';
+    }
+  </script>
+ </body>
 </html>

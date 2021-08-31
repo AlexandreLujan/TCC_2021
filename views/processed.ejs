@@ -78,11 +78,16 @@
       <div class="flex-container">
         <% if(images){ %>
           <% for(var image of images) { %>
+            <% var image  %>
             <div class="flex-item">
+              <img src="../previews/processed_photos/<%=userId%>/de-novo.png">
               <li> <%= image %></li>
               <form action="/processed/download/<%= image %>" method="GET">
                 <button class="btn btn-danger btn-block mt-4">Download</button>
-              </form> 
+              </form>
+              <form action="/processed/preview/<%= image %>" method="POST">
+                <button class="btn btn-danger btn-block mt-4">Preview</button>
+              </form>
               <form action="/processed/del-img/<%= image %>?_method=DELETE" method="POST">
                 <button class="btn btn-danger btn-block mt-4">Delete</button>
               </form>
@@ -96,6 +101,6 @@
   </section>
   
   <script src="../javascripts/left_bar.js"></script>
-
+  
 </body>
 </html>

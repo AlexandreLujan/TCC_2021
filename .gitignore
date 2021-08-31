@@ -65,3 +65,6 @@ uploads/
 
 #Directory processed user images
 processed_photos/
+
+#Directory preview processed user images
+public/previews/

@@ -27,12 +27,12 @@ var aprocRouter = require('./routes/a-process');
 var faqRouter = require('./routes/faq');
 var feedRouter = require('./routes/feedback');
 var mprocRouter = require('./routes/m-process');
-var imgRouter = require('./routes/processed')
+var imgRouter = require('./routes/processed');
 
 var app = express();
 
 //authentication
-require('./auth')(passport);
+require('./middleware/auth')(passport);
 app.use(session({  
   store: new MongoStore({
     db: process.env.MONGO_DB,
@@ -53,10 +53,10 @@ app.set('view engine', 'ejs');
 
 app.use(logger('dev'));
 app.use(express.json());
-app.use(express.urlencoded({ extended: false }));
+app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
-app.use(methodOverride('_method'))
+app.use(methodOverride('_method'));
 
 app.use('/', indexRouter);
 app.use('/login', loginRouter);

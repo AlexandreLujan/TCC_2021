@@ -11,7 +11,7 @@ router.get('/', function(req, res, next) {
 
 /* POST users */
 router.post('/signup', function(req, res, next){
-  const db = require('../db');
+  const db = require('../middleware/db');
   db.createUser(req.body.username, req.body.password, req.body.email, (err, result) => {
     if(err) return res.redirect('/users/signup?fail=true');
     else{

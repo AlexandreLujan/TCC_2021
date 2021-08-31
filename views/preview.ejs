@@ -3,8 +3,8 @@
 <html lang="en" dir="ltr">
   <head>
     <meta charset="UTF-8">
-    <title>Album: <%= title %></title>
-    <link rel="stylesheet" href="http://localhost:3000/stylesheets/album.css">
+    <title>Preview</title>
+    <link rel="stylesheet" href="http://localhost:3000/stylesheets/preview.css">
     <link href='https://unpkg.com/boxicons@2.0.7/css/boxicons.min.css' rel='stylesheet'>
      <meta name="viewport" content="width=device-width, initial-scale=1.0">
    </head>
@@ -73,28 +73,16 @@
     </ul>
   </div>
   <section class="home-section">
-    <div class="text">Album: <%= title %></div>
-    <p>
-      <div class="flex-container">
-        <% if(photos){ %>
-          <% for(var photo of photos) { %>
-            <div class="flex-item">
-              <li> <%= photo %></li>
-              <form action="/repository/download-photo/<%= title %>/<%= photo %>" method="GET">
-                <button class="btn btn-danger btn-block mt-4">Download</button>
-              </form> 
-              <form action="/repository/images/<%= title %>/<%= photo %>?_method=DELETE" method="POST">
-                <button class="btn btn-danger btn-block mt-4">Delete</button>
-              </form>
-            </div>
-          <% } %>     
-        <% }else { %>
-          <p class="card card-body text-center display-4 my-4" style="color:aliceblue">Album is empty</p>
-        <% } %>
-      </div>
-    </p>
+      <div class="text">Preview: <%=image%></div>
+      <img src="http://localhost:3000/previews/processed_photos/<%=userId%>/<%=image%>.png">
+      <form action="/m-process/discard/<%= image %>?_method=DELETE" method="POST">
+        <button class="btn btn-danger btn-block mt-4">Discard</button>
+      </form>
+      <form action="/m-process/save" method="GET">
+        <button class="btn btn-danger btn-block mt-4">Save</button>
+      </form>
   </section>
- 
+
   <script src="http://localhost:3000/javascripts/left_bar.js"></script>
 
 </body>

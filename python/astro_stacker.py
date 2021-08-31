@@ -35,6 +35,13 @@
 #sys.argv[29] = dcb iterations (int)
 #sys.argv[30] = half size (true or false) default false
 #sys.argv[31] = median filter passes (int)
+#sys.argv[32] = Chromatic Aberration: red_scale (int), default 1
+#sys.argv[33] = Chromatic Aberration: blue_scale (int), default 1
+#sys.argv[34] = saturation adjustment (custom white level) (int)
+#sys.argv[35] = highlight mode (int)
+
+#sys.argv[36] = exposure shift in linear scale.From 0.25 to 8.0 (float)
+#sys.argv[37] = exp_preserve_highlights (float) 
 
 #example : python3 astro_stacker.py 60f87bdd1fb02841a6bcf2eb False null True True False True 0.0 0.85 False null False null False null My-Processed-Photo .tiff folder1 linear False True 16 False False 1 3 0 False 0 False 0
 
@@ -87,11 +94,6 @@ def load_frame(imgname, pbar):
         sRGBGamma = (2.222, 4.5)
         setGamma = sRGBGamma
 
-    if(sys.argv[32] == 'Default'):
-        chromaticAberration = (1,1)
-    elif(sys.argv[32] == 'Other'):
-        chromaticAberration = sys.argv[32]
-
     calibrate = master_dark is not None and master_flat is not None
 
     black        = 0 if calibrate or sys.argv[6] else None
@@ -111,12 +113,9 @@ def load_frame(imgname, pbar):
                           dcb_iterations=int(sys.argv[29]),
                           half_size=(sys.argv[30].lower() == 'true'),
                           median_filter_passes=int(sys.argv[31]),
-                          chromatic_aberration=chromaticAberration,
-                          bad_pixels_path=None,
-                          user_sat=int(sys.argv[33]),
-                          highlight_mode=int(sys.argv[34]),
-                          exp_shift=float(sys.argv[35]),
-                          exp_preserve_highlights=float(sys.argv[36]),
+                          chromatic_aberration=((int(sys.argv[32])),(int(sys.argv[33]))),
+                          user_sat=int(sys.argv[34]),
+                          highlight_mode=rawpy.HighlightMode(int(sys.argv[35])),
                           user_black=black)
 
     try:
@@ -252,9 +251,11 @@ def exit_handler():
     outFormat = str(sys.argv[17])
 
     pathToSave = pathDir + 'processed_photos/' + str(sys.argv[1]) + '/'
+    pathToPreview = pathDir + 'public/previews/processed_photos/' + str(sys.argv[1]) + '/'
 
     cv2.imwrite(pathToSave + outname + outFormat, np.uint16(stabilized_average*65535))
-    cv2.imwrite(pathToSave + outname + '.hdr', stabilized_average)
+    cv2.imwrite(pathToPreview + outname + '.png', np.uint16(stabilized_average*65535))
+    #cv2.imwrite(pathToSave + outname + '.hdr', stabilized_average)
 
 def main():
     global pathDir, stabilized_average, divider_mask, imagenumbers
