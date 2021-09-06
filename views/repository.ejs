@@ -79,10 +79,13 @@
         <% if(folders){ %>
           <% for(var folder of folders) { %>
             <div class="flex-item">
-              <i class='bx bx-photo-album'></i>
-              <a href="/repository/album/<%= folder %>" style="color:aliceblue"><%= folder %></a>
+              <a href="/repository/album/<%= folder %>">
+                <img src="../images/folder_img.png">
+              </a>
+              <h3><%= folder %></h3>
+              <button class="button" onclick="location.href='/repository/album/<%= folder %>'">Open</button>
               <form action="/repository/folders/<%= folder %>?_method=DELETE" method="POST">
-                  <button class="btn btn-danger btn-block mt-4">Delete</button>
+                  <button class="button">Delete</button>
               </form>
             </div>
           <% } %>     

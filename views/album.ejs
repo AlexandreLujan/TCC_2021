@@ -79,12 +79,12 @@
         <% if(photos){ %>
           <% for(var photo of photos) { %>
             <div class="flex-item">
-              <li> <%= photo %></li>
+              <h3> <%= photo %></h3>
               <form action="/repository/download-photo/<%= title %>/<%= photo %>" method="GET">
-                <button class="btn btn-danger btn-block mt-4">Download</button>
+                <button class="button">Download</button>
               </form> 
               <form action="/repository/images/<%= title %>/<%= photo %>?_method=DELETE" method="POST">
-                <button class="btn btn-danger btn-block mt-4">Delete</button>
+                <button class="button">Delete</button>
               </form>
             </div>
           <% } %>     

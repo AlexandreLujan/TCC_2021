@@ -77,19 +77,28 @@
     <p>
       <div class="flex-container">
         <% if(images){ %>
+          <% var previewImg %>
           <% for(var image of images) { %>
-            <% var image  %>
+            <% if(image.indexOf(".tiff")) { %>
+              <% previewImg = image.replace(".tiff", '') %>
+            <% }else { %>
+              <% if(image.indexOf(".jpg")) { %>
+                <% previewImg = image.replace(".jpg", '') %>
+              <% }else { %>
+                <% previewImg = image %>
+              <% } %>       
+            <% } %>
             <div class="flex-item">
-              <img src="../previews/processed_photos/<%=userId%>/de-novo.png">
-              <li> <%= image %></li>
-              <form action="/processed/download/<%= image %>" method="GET">
-                <button class="btn btn-danger btn-block mt-4">Download</button>
+              <img src="../previews/processed_photos/<%=userId%>/<%=previewImg%>.png">
+              <h3> <%= image %></h3>
+              <form action="../previews/processed_photos/<%=userId%>/<%=previewImg%>.png" target="_blank">
+                <button class="button">Preview</button>
               </form>
-              <form action="/processed/preview/<%= image %>" method="POST">
-                <button class="btn btn-danger btn-block mt-4">Preview</button>
+              <form action="/processed/download/<%= image %>" method="GET">
+                <button class="button">Download</button>
               </form>
               <form action="/processed/del-img/<%= image %>?_method=DELETE" method="POST">
-                <button class="btn btn-danger btn-block mt-4">Delete</button>
+                <button class="button">Delete</button>
               </form>
             </div>
           <% } %>     

@@ -73,19 +73,33 @@
     </ul>
   </div>
   <section class="home-section">
-    <div class="text">Unprocessed Photos</div>
+    <div class="text">Upload</div>
     <p>
       <div class="drop-area" id="drop">
-        <h5>Drop RAW files here</h5>
+        <h5>Select your RAW files</h5>
         <form class="mt-4" action="/upload/photo" method="POST" enctype="multipart/form-data">
-          <div class="left">
-            <p>Album:</p>
-            <fieldset>
-                <input type="text" placeholder="New-Album-Name" name="nameAlbum" id="nameAlbum">
-            </fieldset>
+          <br>
+          <p>Where would you like to upload your files?</p>
+          <fieldset id="album">
+            <input type="radio" value="new" name="album">
+            <label for="album">New Album</label>
+            <input type="radio" value="exist" name="album">
+            <label for="album">Existing Album</label>
             <br>
-            <input type="file" name="multi-files" multiple id="files" class="form-control-file border"/>
-          <button type="submit" class="btn btn-primary">Submit</button>
+            <input type="text" id="newAlbum" name="newAlbum" placeholder="New Album Name">
+            <select name="existAlbum" id="existAlbum">
+              <% if(folders){ %>
+                <% for(var folder of folders) { %>
+                  <option value="<%=folder%>"><%=folder%></option>
+                <% } %>
+              <% }else { %>
+                <p class="card card-body text-center display-4 my-4" style="color:aliceblue">No album</p>
+              <% } %>
+            </select>
+          </fieldset>
+          <br>
+          <input type="file" name="multi-files" multiple id="files" class="form-control-file border"/>
+          <button type="submit" class="button">Submit</button>
         </form>
       </div> 
       <div id="list" class="mdl-grid"></div>
@@ -93,6 +107,20 @@
   </section>
   
   <script src="../javascripts/left_bar.js"></script>
+  <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+  <script>
+    $('input[name="album"]').click(function(e) {
+      if(e.target.value === 'new') {
+        $('#newAlbum').show();
+        $('#existAlbum').hide();
+      } else {
+        $('#newAlbum').hide();
+        $('#existAlbum').show();
+      }
+    })
+    $('#newAlbum').hide();
+    $('#existAlbum').hide();
+  </script>
 
 </body>
 </html>

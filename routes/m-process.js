@@ -3,6 +3,7 @@ var router = express.Router();
 var {PythonShell} =require('python-shell');
 const fs = require('fs');
 var photoFormat;
+var paramsUsed = [];
 
 /* GET Manual process page. */
 router.get('/', global.authenticationMiddleware(), function(req, res, next) {
@@ -31,8 +32,16 @@ router.post('/m-exec', global.authenticationMiddleware(), function(req, res, nex
                 req.body.imageFormat, req.body.album, req.body.gamma, req.body.noAutoScale, req.body.noAutoBright,
                 req.body.outputBPS, req.body.cameraWB, req.body.autoWB, req.body.colorSpace,
                 req.body.demosaicAlgorithm, req.body.fbddNoiseReduction, req.body.dcbEnhance,
-                req.body.dcbIterations, req.body.halfSize, req.body.medianFilter,
-                req.body.redScale, req.body.blueScale, req.body.saturation, req.body.highlight);
+                req.body.dcbIterations, req.body.halfSize, req.body.medianFilter, req.body.redScale,
+                req.body.blueScale, req.body.saturation, req.body.highlight, req.body.object);
+
+    paramsUsed.push(req.body.align, req.body.cache, req.body.raw, req.body.crop, 
+                    req.body.padd, req.body.thr, req.body.gamma, req.body.noAutoScale, 
+                    req.body.noAutoBright, req.body.outputBPS, req.body.cameraWB, 
+                    req.body.autoWB, req.body.demosaicAlgorithm, req.body.fbddNoiseReduction, 
+                    req.body.dcbEnhance, req.body.dcbIterations, req.body.halfSize, 
+                    req.body.medianFilter, req.body.redScale, req.body.blueScale, 
+                    req.body.saturation, req.body.highlight, req.body.object);
     
     photoFormat = req.body.imageFormat;
 
@@ -49,8 +58,8 @@ router.post('/m-exec', global.authenticationMiddleware(), function(req, res, nex
             req.body.imageFormat, req.body.album, req.body.gamma, req.body.noAutoScale, req.body.noAutoBright,
             req.body.outputBPS, req.body.cameraWB, req.body.autoWB, req.body.colorSpace,
             req.body.demosaicAlgorithm, req.body.fbddNoiseReduction, req.body.dcbEnhance,
-            req.body.dcbIterations, req.body.halfSize, req.body.medianFilter,
-            req.body.redScale, req.body.blueScale, req.body.saturation, req.body.highlight] 
+            req.body.dcbIterations, req.body.halfSize, req.body.medianFilter,req.body.redScale,
+            req.body.blueScale, req.body.saturation, req.body.highlight, req.body.object] 
     };
       
     PythonShell.run('astro_stacker.py', options, function (err, result){
@@ -94,6 +103,7 @@ router.delete('/discard/:image', global.authenticationMiddleware(), (req, res) =
 
 /* SAVE photo (already saved, just redirect to processed) */
 router.get('/save', global.authenticationMiddleware(), (req, res) => {
+    console.log(paramsUsed);
     res.redirect('/processed');
 });
 
