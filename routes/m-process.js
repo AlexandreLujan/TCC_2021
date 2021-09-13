@@ -121,6 +121,7 @@ router.delete('/discard/:image', global.authenticationMiddleware(), (req, res) =
 
 /* SAVE photo and CSV arguments (photo already saved) */
 router.get('/save', global.authenticationMiddleware(), async(req, res) => {
+    var csvDir = [(process.env.ARGSCSV_DIR), paramsUsed[22].toString(), ".csv"].join('');
     var list = [{
         Object: paramsUsed[22].toString(), Base: paramsUsed[23].toString(), Dark: paramsUsed[24].toString(),
         Flat: paramsUsed[25].toString(), Mask: paramsUsed[26].toString(), 
@@ -135,7 +136,7 @@ router.get('/save', global.authenticationMiddleware(), async(req, res) => {
         blueScale: paramsUsed[19].toString(), Saturation: paramsUsed[20].toString(), Highlight: paramsUsed[21].toString()
     }];
     var args_csv = new ObjectsToCsv(list);
-    await args_csv.toDisk((process.env.ARGSCSV_DIR), { append: true });
+    await args_csv.toDisk(csvDir, { append: true });
     
     var rawInfo = [{
       Camera: paramsUsed[27].toString(),
