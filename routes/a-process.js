@@ -4,6 +4,7 @@ var {PythonShell} =require('python-shell');
 const fs = require('fs');
 const dcraw = require('dcraw');
 var cameraInfo = [];
+var argsUsed = [];
 
 /* GET Automatic process page. */
 router.get('/', global.authenticationMiddleware(), function(req, res, next) {
@@ -55,27 +56,34 @@ router.post('/a-next', global.authenticationMiddleware(), function(req, res, nex
 });  
 
 router.post('/a-exec', global.authenticationMiddleware(), function(req, res, next) {
-    console.log(req.body.baseFrame, req.body.baseName, req.body.darkFrame, req.body.darkName,
-        req.body.flatFrame, req.body.flatName, req.body.maskFrame, req.body.maskName,
-        req.body.outputName, req.body.imageFormat, req.body.colorSpace);
+    //Convert yes to true and no to false
+    if(req.body.baseFrame === 'Yes') {argsUsed[0] = 'True'; argsUsed[1] = req.body.baseName} else {argsUsed[0] = 'False'; argsUsed[1] = ''}
+    if(req.body.darkFrame === 'Yes') {argsUsed[2] = 'True'; argsUsed[3] = req.body.darkName} else {argsUsed[2] = 'False'; argsUsed[3] = ''}
+    if(req.body.flatFrame === 'Yes') {argsUsed[4] = 'True'; argsUsed[5] = req.body.flatName} else {argsUsed[4] = 'False'; argsUsed[5] = ''}
+    if(req.body.maskFrame === 'Yes') {argsUsed[6] = 'True'; argsUsed[7] = req.body.maskName} else {argsUsed[6] = 'False'; argsUsed[7] = ''}
+    argsUsed[8] = req.body.outputName;
+    argsUsed[9] = req.body.imageFormat;
+    argsUsed[10] = req.body.colorSpace;
 
-    //Here are the option object in which arguments can be passed for the python_test.js.
-    let options = {
-        mode: 'text',
-        pythonPath: 'python3', 
-        pythonOptions: ['-u'], // get print results in real-time
-        scriptPath: '/home/alexandre/TCC_2021/python', //If you are having python_test.py script in same folder, then it's optional.
-        //An argument which can be accessed in the script using sys.argv[1]
-        args: [cameraInfo[0], req.body.baseFrame, req.body.darkFrame,
-               req.body.flatFrame, req.body.maskFrame, cameraInfo[1], 
-               cameraInfo[2], cameraInfo[3], cameraInfo[4], cameraInfo[5]] 
-    };
+    console.log(argsUsed);
+
+    // //Here are the option object in which arguments can be passed for the python_test.js.
+    // let options = {
+    //     mode: 'text',
+    //     pythonPath: 'python3', 
+    //     pythonOptions: ['-u'], // get print results in real-time
+    //     scriptPath: '/home/alexandre/TCC_2021/python', //If you are having python_test.py script in same folder, then it's optional.
+    //     //An argument which can be accessed in the script using sys.argv[1]
+    //     args: [cameraInfo[0], req.body.baseFrame, req.body.darkFrame,
+    //            req.body.flatFrame, req.body.maskFrame, cameraInfo[1], 
+    //            cameraInfo[2], cameraInfo[3], cameraInfo[4], cameraInfo[5]] 
+    // };
       
-    PythonShell.run('recommender_system.py', options, function (err, result){
-        if (err) throw err;
-        console.log('result: ', result.toString());
-        res.redirect("/m-process/preview/");
-    });   
+    // PythonShell.run('recommender_system.py', options, function (err, result){
+    //     if (err) throw err;
+    //     console.log('result: ', result.toString());
+    //     res.redirect("/m-process/preview/");
+    // });   
     
 });  
 

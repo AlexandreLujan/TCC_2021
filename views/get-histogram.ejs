@@ -3,8 +3,8 @@
 <html lang="en" dir="ltr">
   <head>
     <meta charset="UTF-8">
-    <title>Automatic Process</title>
-    <link rel="stylesheet" href="../stylesheets/a-process.css">
+    <title>Histogram</title>
+    <link rel="stylesheet" href="http://localhost:3000/stylesheets/get-histogram.css">
     <link href='https://unpkg.com/boxicons@2.0.7/css/boxicons.min.css' rel='stylesheet'>
      <meta name="viewport" content="width=device-width, initial-scale=1.0">
    </head>
@@ -87,44 +87,11 @@
     </ul>
   </div>
   <section class="home-section">
-    <div class="text">Automatic Process</div>
-    <p>
-    <div class="drop-area" id="drop">
-        <form action="/a-process/a-next" method="POST">
-            <br>
-            <p>Please select the album to process:</p>
-            <fieldset>
-                <select name="chooseAlbum" id="choosetAlbum">
-                    <% if(folders){ %>
-                        <% for(var folder of folders) { %>
-                            <option value="<%=folder%>"><%=folder%></option>
-                        <% } %>
-                    <% }else { %>
-                        <p class="card card-body text-center display-4 my-4" style="color:aliceblue">No album</p>
-                    <% } %>
-                </select>
-            </fieldset>
-            <br>
-            <p>Please select the astronomical object photographed:</p>
-            <fieldset>
-                <select name="category" id="category">
-                    <option value="star_clusters">Star Clusters</option>
-                    <option value="nebulae">Nebulae</option>
-                    <option value="galaxies">Galaxies</option>
-                    <option value="comet">Comet</option>
-                    <option value="planet">Planet</option>
-                    <option value="moon">Moon</option>
-                    <option value="star">Star</option>
-                </select>
-            </fieldset> 
-            <br>
-            <button type="submit">Next</button>
-        </form>
-    </div> 
-    </p>
+      <div class="text">Histogram</div>
+      <img src="http://localhost:3000/previews/generated_histogram/<%=userId%>.png">
   </section>
-  
-  <script src="../javascripts/left_bar.js"></script>
-  
+
+  <script src="http://localhost:3000/javascripts/left_bar.js"></script>
+
 </body>
 </html>

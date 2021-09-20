@@ -3,8 +3,8 @@
 <html lang="en" dir="ltr">
   <head>
     <meta charset="UTF-8">
-    <title>Automatic Process</title>
-    <link rel="stylesheet" href="http://localhost:3000/stylesheets/a-next.css">
+    <title>Manual Process</title>
+    <link rel="stylesheet" href="http://localhost:3000/stylesheets/m-next.css">
     <link href='https://unpkg.com/boxicons@2.0.7/css/boxicons.min.css' rel='stylesheet'>
      <meta name="viewport" content="width=device-width, initial-scale=1.0">
    </head>
@@ -87,9 +87,9 @@
     </ul>
   </div>
   <section class="home-section">
-    <div class="text">Automatic Process</div>
+    <div class="text">Manual Process</div>
     <p>
-      <form action="/a-process/a-exec" method="POST">
+      <form action="/m-process/m-exec" method="POST">
         <div class="flex-container">
           <div class="flex-item-1">
             <p>Use a Base Frame:</p>
@@ -110,6 +110,48 @@
               </select>
             </fieldset>
             <br>
+            <p>Align the images using a homography:</p>
+            <fieldset id="align">
+              <input type="radio" value="Yes" name="align" checked>
+              <label for="align">Yes</label>
+              <input type="radio" value="No" name="align">
+              <label for="align">No</label>
+            </fieldset>
+            <br>
+            <p>Cache the keypoints in the base frame:</p>
+            <fieldset id="cache">
+              <input type="radio" value="Yes" name="cache" checked>
+              <label for="cache">Yes</label>
+              <input type="radio" value="No" name="cache">
+              <label for="cache">No</label>
+            </fieldset>
+            <br>
+            <p>Don't demosaic. Keep as raw Bayer mosaic:</p>
+            <fieldset id="raw">
+              <input type="radio" value="Yes" name="raw">
+              <label for="raw">Yes</label>
+              <input type="radio" value="No" name="raw" checked>
+              <label for="raw">No</label>
+            </fieldset>
+            <br>
+            <p>Crop to the visible window:</p>
+            <fieldset id="crop">
+              <input type="radio" value="Yes" name="crop" checked>
+              <label for="crop">Yes</label>
+              <input type="radio" value="No" name="crop">
+              <label for="crop">No</label>
+            </fieldset>
+            <br>
+            <p>Add black padding (in fraction of width,height) around the image:</p>
+            <fieldset id="padd">
+              <input type="text" name="padd" value="0.0" placeholder="0.0" class="mytext">
+            </fieldset>
+            <br>
+            <p> Align using images thresholded at the percentile:</p>
+            <fieldset id="thr">
+              <input type="text" name="thr" value="0.85" placeholder="0.85" class="mytext">
+            </fieldset>
+            <br>
             <p>Use a Dark Frame:</p>
             <fieldset id="darkFrame">
               <input type="radio" value="Yes" name="darkFrame">
@@ -127,8 +169,7 @@
                 <% } %>
               </select>
             </fieldset>
-          </div>
-          <div class="flex-item-2">
+            <br>
             <p>Use a Flat Frame:</p>
             <fieldset id="flatFrame">
               <input type="radio" value="Yes" name="flatFrame">
@@ -165,7 +206,7 @@
               </select>
             </fieldset>
           </div>
-          <div class="flex-item-3">
+          <div class="flex-item-2">
             <p>Output Name:</p>
             <fieldset id="outputName">
               <input type="text" name="outputName" value="My-Processed-Photo" placeholder="My-Processed-Photo">
@@ -179,8 +220,63 @@
                 <option value=".png" >PNG</option>
               </select>
             </fieldset>
-          </div>
-          <div class="flex-item-4">
+            <br> 
+            <p>Gamma</p>
+            <fieldset>
+              <select name="gamma" id="gamma">
+                <option value="linear" selected>Linear</option>
+                <option value="sRGB">sRGB</option>
+              </select>
+            </fieldset> 
+            <br>
+            <p>No Auto Scale:</p>
+            <fieldset id="noAutoScale">
+              <input type="radio" value="Yes" name="noAutoScale">
+              <label for="noAutoScale">Yes</label>
+              <input type="radio" value="No" name="noAutoScale" checked>
+              <label for="noAutoScale">No</label>
+            </fieldset>
+            <br>
+            <p>No Auto Bright</p>
+            <fieldset id="noAutoBright">
+              <input type="radio" value="Yes" name="noAutoBright" checked>
+              <label for="noAutoBright">Yes</label>
+              <input type="radio" value="No" name="noAutoBright">
+              <label for="noAutoBright">No</label>
+            </fieldset>
+            <br>
+            <p>Output bps</p>
+            <fieldset id="outputBPS">
+              <input type="radio" value="8" name="outputBPS">
+              <label for="outputBPS">8</label>
+              <input type="radio" value="16" name="outputBPS" checked>
+              <label for="outputBPS">16</label>
+            </fieldset>
+            <br>
+            <p>No Auto Bright</p>
+            <fieldset id="noAutoBright">
+              <input type="radio" value="Yes" name="noAutoBright" checked>
+              <label for="noAutoBright">Yes</label>
+              <input type="radio" value="No" name="noAutoBright">
+              <label for="noAutoBright">No</label>
+            </fieldset>
+            <br>
+            <p>Use Camera White Balance</p>
+            <fieldset id="cameraWB">
+              <input type="radio" value="Yes" name="cameraWB">
+              <label for="cameraWB">Yes</label>
+              <input type="radio" value="No" name="cameraWB" checked>
+              <label for="cameraWB">No</label>
+            </fieldset>
+            <br>
+            <p>Use Auto White Balance</p>
+            <fieldset id="autoWB">
+              <input type="radio" value="Yes" name="autoWB">
+              <label for="autoWB">Yes</label>
+              <input type="radio" value="No" name="autoWB" checked>
+              <label for="autoWB">No</label>
+            </fieldset>
+            <br>
             <p>Color Space</p>
             <fieldset>
               <select name="colorSpace" id="colorSpace">
@@ -191,9 +287,88 @@
                 <option value="0">raw</option>
                 <option value="1" selected>sRGB</option>
               </select>
-            </fieldset>  
+            </fieldset> 
+          </div>
+          <div class="flex-item-3">
+            <p>Demosaic Algorithm</p>
+            <fieldset>
+              <select name="demosaicAlgorithm" id="demosaicAlgorithm">
+                <option value="12">AAHD</option>
+                <option value="6">AFD</option>
+                <option selected value="3">AHD</option>
+                <option value="10">AMAZE</option>
+                <option value="4">DCB</option>
+                <option value="11">DHT</option>
+                <option value="0">LINEAR</option>
+                <option value="9">LIMMSE</option>
+                <option value="5">MODIFIED_AHD</option>
+                <option value="2">PPG</option>
+                <option value="7">VCD</option>
+                <option value="8">VCD_MODIFIED_AHD</option>
+                <option value="1">VNG</option>
+              </select>
+            </fieldset>
             <br>
-            <button type="submit">Process</button>
+            <p>FBDD noise reduction:</p>
+            <fieldset>
+              <select name="fbddNoiseReduction" id="fbddNoiseReduction">
+                <option value="2">Full</option>
+                <option value="1">Light</option>
+                <option value="0" selected>Off</option>
+              </select>
+            </fieldset>
+            <br>
+            <p>DCB Enhance:</p>
+            <fieldset id="dcbEnhance">
+              <input type="radio" value="Yes" name="dcbEnhance">
+              <label for="dcbEnhance">Yes</label>
+              <input type="radio" value="No" name="dcbEnhance" checked>
+              <label for="dcbEnhance">No</label>
+            </fieldset>
+            <br>
+            <p>DCB correction passes:</p>
+            <fieldset id="dcbIterations">
+              <input type="text" name="dcbIterations" value="0" placeholder="0" class="mytext">
+            </fieldset>
+            <br>
+            <p>Half Size:</p>
+            <fieldset id="halfSize">
+              <input type="radio" value="Yes" name="halfSize">
+              <label for="halfSize">Yes</label>
+              <input type="radio" value="No" name="halfSize" checked>
+              <label for="halfSize">No</label>
+            </fieldset>
+            <br>
+            <p>Median Filter passes:</p>
+            <fieldset id="medianFilter">
+              <input type="text" name="medianFilter" value="0" placeholder="0" class="mytext">
+            </fieldset>
+            <br>
+            <p>Chromatic Aberration:</p>
+            <fieldset>
+              <input type="text" id="redScale" name="redScale" value="1" placeholder="1" class="mytext">
+              <input type="text" id="blueScale" name="blueScale" value="1" placeholder="1" class="mytext">
+            </fieldset>
+            <br>
+            <p>Saturation adjustment:</p>
+            <fieldset id="saturation">
+              <input type="text" name="saturation" value="0" placeholder="0" class="mytext">
+            </fieldset>
+            <br>
+            <p>Highlight Mode:</p>
+            <fieldset>
+              <select name="highlight" id="highlight">
+                <option value="2">Blend</option>
+                <option value="0">Clip</option>
+                <option value="1">Ignore</option>
+                <option value="5" selected>Default</option>
+              </select>
+            </fieldset> 
+          </div>
+          <div class="flex-item-4">
+           
+            </div>
+            <button type="submit" onclick="hideElement()">Process</button>
           </div> 
         </div>
       </form>
@@ -256,5 +431,5 @@
       element.style.visibility = 'visible';
     }
   </script>
-</body>
+ </body>
 </html>

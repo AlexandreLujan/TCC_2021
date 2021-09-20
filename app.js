@@ -29,6 +29,7 @@ var feedRouter = require('./routes/feedback');
 var mprocRouter = require('./routes/m-process');
 var imgRouter = require('./routes/processed');
 var aboutRouter = require('./routes/about');
+var histRouter = require('./routes/histogram');
 
 var app = express();
 
@@ -71,6 +72,7 @@ app.use('/faq', faqRouter);
 app.use('/feedback', feedRouter);
 app.use('/processed', imgRouter);
 app.use('/about', aboutRouter);
+app.use('/histogram', histRouter);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

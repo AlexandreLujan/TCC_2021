@@ -68,3 +68,6 @@ processed_photos/
 
 #Directory preview processed user images
 public/previews/
+
+#Directory histogram
+histogram/
