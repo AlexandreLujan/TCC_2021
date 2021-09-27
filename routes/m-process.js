@@ -149,7 +149,6 @@ router.delete('/discard/:image', global.authenticationMiddleware(), (req, res) =
 
 /* SAVE photo and CSV arguments (photo already saved) */
 router.get('/save', global.authenticationMiddleware(), async(req, res) => {
-    var csvDir = [(process.env.ARGSCSV_DIR), cameraInfo[0].toString(), ".csv"].join('');
     var list = [{
         Object: cameraInfo[0].toString(),
         Base: paramsUsed[0].toString(), 
@@ -181,7 +180,7 @@ router.get('/save', global.authenticationMiddleware(), async(req, res) => {
     }];
 
     var args_csv = new ObjectsToCsv(list);
-    await args_csv.toDisk(csvDir, { append: true });
+    await args_csv.toDisk((process.env.ARGSCSV_DIR), { append: true });
     
     var rawInfo = [{
         Object: cameraInfo[0].toString(),

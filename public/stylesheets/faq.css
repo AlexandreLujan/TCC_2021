@@ -57,7 +57,7 @@ nav .menu{
 }
 .set{
   display: flex;
-  background: url('../images/image-2.jpeg')no-repeat;
+  background-color: black;
   background-size: cover;
   background-position: center;
   align-items: center;
@@ -95,7 +95,7 @@ nav .menu{
 }
 .accordion .accordion-text .faq-text{
   margin-top: 25px;
-  height: 263px;
+  height: 500px;
   overflow-y: auto;
 }
 .faq-text::-webkit-scrollbar{

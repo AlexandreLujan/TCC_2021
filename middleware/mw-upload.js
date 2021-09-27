@@ -22,7 +22,8 @@ var storage = multer.diskStorage({
     callback(null, albumDir);
   },
   filename: (req, file, callback) => {
-    const match = ["image/x-canon-cr2", "image/raw"];
+    const match = ["image/x-canon-cr2", "image/raw", "image/x-sony-arw",
+                   "image/x-pentax-pef", "image/x-nikon-nef"];
 
     if (match.indexOf(file.mimetype) === -1) {
       var message = `${file.originalname} is invalid. Only accept RAW format.`;

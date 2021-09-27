@@ -3,8 +3,8 @@
 <html lang="en" dir="ltr">
   <head>
     <meta charset="UTF-8">
-    <title>Upload</title>
-    <link rel="stylesheet" href="../stylesheets/upload.css">
+    <title>Histogram</title>
+    <link rel="stylesheet" href="../stylesheets/histogram.css">
     <link href='https://unpkg.com/boxicons@2.0.7/css/boxicons.min.css' rel='stylesheet'>
      <meta name="viewport" content="width=device-width, initial-scale=1.0">
    </head>
@@ -87,54 +87,31 @@
     </ul>
   </div>
   <section class="home-section">
-    <div class="text">Upload</div>
+    <div class="text">Image Editor</div>
     <p>
-      <div class="drop-area" id="drop">
-        <h5>Select your RAW files</h5>
-        <form class="mt-4" action="/upload/photo" method="POST" enctype="multipart/form-data">
-          <br>
-          <p>Where would you like to upload your files?</p>
-          <fieldset id="album">
-            <input type="radio" value="new" name="album">
-            <label for="album">New Album</label>
-            <input type="radio" value="exist" name="album">
-            <label for="album">Existing Album</label>
+    <div class="drop-area" id="drop">
+        <form action="/image-editor/get-tui" method="POST">
             <br>
-            <input type="text" id="newAlbum" name="newAlbum" placeholder="New Album Name">
-            <select name="existAlbum" id="existAlbum">
-              <% if(folders){ %>
-                <% for(var folder of folders) { %>
-                  <option value="<%=folder%>"><%=folder%></option>
-                <% } %>
-              <% }else { %>
-                <p class="card card-body text-center display-4 my-4" style="color:aliceblue">No album</p>
-              <% } %>
-            </select>
-          </fieldset>
-          <br>
-          <input type="file" name="multi-files" multiple id="files" class="form-control-file border"/>
-          <button type="submit" class="button">Submit</button>
+            <p>Please select the photo:</p>
+            <fieldset>
+                <select name="photo" id="photo">
+                    <% if(images){ %>
+                        <% for(var image of images) { %>
+                            <option value="<%=image%>"><%=image%></option>
+                        <% } %>
+                    <% }else { %>
+                        <p class="card card-body text-center display-4 my-4" style="color:aliceblue">No images</p>
+                    <% } %>
+                </select>
+            </fieldset>
+            <br>
+            <button type="submit">Open</button>
         </form>
-      </div> 
-      <div id="list" class="mdl-grid"></div>
+    </div> 
     </p>
   </section>
   
   <script src="../javascripts/left_bar.js"></script>
-  <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
-  <script>
-    $('input[name="album"]').click(function(e) {
-      if(e.target.value === 'new') {
-        $('#newAlbum').show();
-        $('#existAlbum').hide();
-      } else {
-        $('#newAlbum').hide();
-        $('#existAlbum').show();
-      }
-    })
-    $('#newAlbum').hide();
-    $('#existAlbum').hide();
-  </script>
-
+  
 </body>
 </html>

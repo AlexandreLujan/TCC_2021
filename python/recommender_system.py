@@ -4,7 +4,7 @@ import numpy as np
 from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.metrics.pairwise import linear_kernel
 
-a, b, c, d, e = None, None, None, None, None
+a, b, c, d, e, m = None, None, None, None, None, None
 
 def create_soup(x):
 	global a, b, c, d, e
@@ -12,6 +12,8 @@ def create_soup(x):
 	return ''.join(x['Object'])+' '+''.join(a)+' '+''.join(b)+' '+''.join(c)+' '+''.join(d)+' '+''.join(e)
 
 def get_recommendations(title, cosine_sim, indices):
+	global m 
+
 	idx = indices[title]
 	
 	sim_scores = list(enumerate(cosine_sim[idx]))
@@ -20,22 +22,21 @@ def get_recommendations(title, cosine_sim, indices):
 	
 	sim_scores = sim_scores[1:11]
 	
-	movie_indices = [i[0] for i in sim_scores]
+	obj_indices = [i[0] for i in sim_scores]
 	
-	return m['title'].iloc[movie_indices]
+	return m['Object'].iloc[obj_indices]
 
 def main():
-	global a, b, c, d, e
+	global a, b, c, d, e, m
 
-	csvDir = '../database/' + str(sys.argv[1]) + '.csv'
-
-	astroObj=pd.read_csv(csvDir)
+	astroObj=pd.read_csv('../database/Argumments.csv')
 	camera=pd.read_csv('../database/Camera.csv')
 
 	print(astroObj.columns)
 	print(camera.columns)
 
-	m = pd.merge(camera, astroObj, how = 'inner', on = str(sys.argv[1]))
+	m = pd.merge(camera, astroObj, how = 'inner', on = "Object")
+	m = m.loc[(m['Object'] == str(sys.argv[1]))]
 	print(m)
 
 	a = ''.join(str(u).replace(' ', '') for u in m['Camera'])
@@ -53,7 +54,7 @@ def main():
 
 	cosine_sim = linear_kernel(tfidf_matrix, tfidf_matrix)
 	indices = pd.Series(m.index, index=m['Object']).drop_duplicates()
-	get_recommendations('Star_Clusters', cosine_sim, indices)
+	get_recommendations(str(sys.argv[2]), cosine_sim, indices)
 
 # main
 if __name__ == '__main__':

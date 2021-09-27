@@ -25,11 +25,11 @@ var uploadRouter = require('./routes/upload');
 var reposRouter = require('./routes/repository');
 var aprocRouter = require('./routes/a-process');
 var faqRouter = require('./routes/faq');
-var feedRouter = require('./routes/feedback');
 var mprocRouter = require('./routes/m-process');
 var imgRouter = require('./routes/processed');
 var aboutRouter = require('./routes/about');
 var histRouter = require('./routes/histogram');
+var editRouter = require('./routes/image-editor');
 
 var app = express();
 
@@ -69,10 +69,10 @@ app.use('/repository', reposRouter);
 app.use('/a-process', aprocRouter);
 app.use('/m-process', mprocRouter);
 app.use('/faq', faqRouter);
-app.use('/feedback', feedRouter);
 app.use('/processed', imgRouter);
 app.use('/about', aboutRouter);
 app.use('/histogram', histRouter);
+app.use('/image-editor', editRouter);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

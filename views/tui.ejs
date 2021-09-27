@@ -1,0 +1,49 @@
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <title>Design</title>
+        <link type="text/css" href="../stylesheets/tui-color-picker.css" rel="stylesheet">
+        <link rel="stylesheet" href="../stylesheets/tui-image-editor.css">
+        <style>
+            @import url(http://fonts.googleapis.com/css?family=Noto+Sans);
+            html, body {
+                height: 100%;
+                margin: 0;
+            }
+        </style>
+    </head>
+    <body>
+        <input type="hidden" name="image" id="image" value="<%=image%>" >
+        <input type="hidden" name="userId" id="userId" value="<%=userId%>">
+        <div id="tui-image-editor-container"></div>
+        <script type="text/javascript" src="../javascripts/fabric.js"></script>
+        <script type="text/javascript" src="../javascripts/tui-code-snippet.min.js"></script>
+        <script type="text/javascript" src="../javascripts/tui-color-picker.js"></script>
+        <script type="text/javascript" src="../javascripts/FileSaver.min.js"></script>
+        <script src="../javascripts/tui-image-editor.js"></script>
+        <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+        <script>
+         // Image editor
+         var photo = $('#image').val();
+         var id = $('#userId').val();
+         console.log(photo)
+         var imageEditor = new tui.ImageEditor('#tui-image-editor-container', {
+             includeUI: {
+                 loadImage: {
+                     path: "../previews/processed_photos/" + id + '/' + photo,
+                     name: photo
+                 },
+                //  theme: blackTheme, // or whiteTheme
+                 initMenu: 'filter',
+                 menuBarPosition: 'bottom'
+             },
+             cssMaxWidth: 700,
+             cssMaxHeight: 500,
+             usageStatistics: false
+         });
+         window.onresize = function() {
+             imageEditor.ui.resizeEditor();
+         }
+        </script>
+    </body>
+</html>
