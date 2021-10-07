@@ -1,60 +1,69 @@
 import sys
 import pandas as pd
 import numpy as np
-from sklearn.feature_extraction.text import TfidfVectorizer
-from sklearn.metrics.pairwise import linear_kernel
 
-a, b, c, d, e, m = None, None, None, None, None, None
+n = None
 
-def create_soup(x):
-	global a, b, c, d, e
-
-	return ''.join(x['Object'])+' '+''.join(a)+' '+''.join(b)+' '+''.join(c)+' '+''.join(d)+' '+''.join(e)
-
-def get_recommendations(title, cosine_sim, indices):
-	global m 
-
-	idx = indices[title]
-	
-	sim_scores = list(enumerate(cosine_sim[idx]))
-	
-	sim_scores = sorted(sim_scores, key=lambda x: x[1], reverse=True)
-	
-	sim_scores = sim_scores[1:11]
-	
-	obj_indices = [i[0] for i in sim_scores]
-	
-	return m['Object'].iloc[obj_indices]
+def dist(x):
+	global n
+	return np.linalg.norm(x-[float(sys.argv[2]), float(sys.argv[3]), float(n)])
 
 def main():
-	global a, b, c, d, e, m
+	global n
 
-	astroObj=pd.read_csv('../database/Argumments.csv')
+	#read csv
 	camera=pd.read_csv('../database/Camera.csv')
+	argumments = pd.read_csv('../database/Argumments.csv')
+	
+	#discard rows diferent than sys.argv[1] (astronomy object)
+	camera = camera.loc[(camera['Object'] == str(sys.argv[1]))]
 
-	print(astroObj.columns)
-	print(camera.columns)
+	#remove ' sec' from Shutter column
+	camera['Shutter'] = camera['Shutter'].map(lambda x: x.replace(' sec', ''))
 
-	m = pd.merge(camera, astroObj, how = 'inner', on = "Object")
-	m = m.loc[(m['Object'] == str(sys.argv[1]))]
-	print(m)
+	#drop object column (not need anymore)
+	camera = camera.drop(['Object'], axis=1)
 
-	a = ''.join(str(u).replace(' ', '') for u in m['Camera'])
-	b = ''.join(str(v).replace(' ', '') for v in m['Speed'])
-	c = ''.join(str(x).replace(' ', '') for x in m['Shutter'])
-	d = ''.join(str(w).replace(' ', '') for w in m['Aperture'])
-	e = ''.join(str(y).replace(' ', '') for y in m['Focal_Length'])
+	#if the sys.argv[4] is inf or zero, that means the photographer did not use a lens
+	#any other value means the photographer used a lens
+	#we need to compare and drop rows that are not compatible with the input data
+	#first lets replace 'f/inf' and 'f/0.0' with 0.0
+	camera['Aperture'] = camera['Aperture'].map(lambda x: x.replace(('f/'), ''))
+	camera['Aperture'] = camera['Aperture'].map(lambda x: x.replace(('inf'), '0.0'))
+	#print(camera)
+	if (str(sys.argv[4]) == 'f/inf'):
+		#keep rows where Aperture is equal to 0.0
+		camera = camera.loc[(camera['Aperture'] == ('0.0'))]
 
-	m['Soup']=m.apply(create_soup, axis=1)
+		#replace 'f/inf' from sys.argv[4] with '0.0'
+		aux = str(sys.argv[4])
+		n = aux.replace('f/inf', '0.0')
 
-	print(m['Soup'])
-	tfidf = TfidfVectorizer(stop_words='english')
-	tfidf_matrix = tfidf.fit_transform(m['Soup'])
-	print(tfidf_matrix.shape)
+	elif (str(sys.argv[4]) == 'f/0.0'):
+		#keep rows where Aperture is equal to 0.0
+		camera = camera.loc[(camera['Aperture'] == ('0.0'))]
 
-	cosine_sim = linear_kernel(tfidf_matrix, tfidf_matrix)
-	indices = pd.Series(m.index, index=m['Object']).drop_duplicates()
-	get_recommendations(str(sys.argv[2]), cosine_sim, indices)
+		#remove 'f/' from sys.argv[4]
+		aux = str(sys.argv[4])
+		n = aux.replace('f/', '')
+
+	else:
+		#keep rows where Aperture is diferent to 0.0
+		camera = camera.loc[(camera['Aperture'] != ('0.0'))]
+
+		#remove 'f/' from Aperture and sys.argv[4]
+		camera['Aperture'] = camera['Aperture'].map(lambda x: x.replace('f/', ''))
+		aux = str(sys.argv[4])
+		n = aux.replace('f/', '')
+
+	#convert the data to a float matrix
+	camera = camera.astype(float)
+
+	#get distancy value from input
+	camera['Dist']=camera.apply(dist, axis=1)
+	print(camera)
+	camera['Sort']=camera.sort_values(by='Dist', ascending=True)
+	print(camera.sort_values(by='Dist', ascending=True))
 
 # main
 if __name__ == '__main__':

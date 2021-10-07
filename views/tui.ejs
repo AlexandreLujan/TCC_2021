@@ -1,7 +1,7 @@
 <html>
     <head>
         <meta charset="UTF-8">
-        <title>Design</title>
+        <title>TUI Image Editor</title>
         <link type="text/css" href="../stylesheets/tui-color-picker.css" rel="stylesheet">
         <link rel="stylesheet" href="../stylesheets/tui-image-editor.css">
         <style>
@@ -30,8 +30,8 @@
          var imageEditor = new tui.ImageEditor('#tui-image-editor-container', {
              includeUI: {
                  loadImage: {
-                     path: "../previews/processed_photos/" + id + '/' + photo,
-                     name: photo
+                     path: "../previews/processed_photos/" + id + "/" + photo + ".png",
+                     name: photo + ".png"
                  },
                 //  theme: blackTheme, // or whiteTheme
                  initMenu: 'filter',

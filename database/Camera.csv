@@ -1,4 +1,10 @@
-Object,Camera,Speed,Shutter,Aperture,Focal_Length
-Star_Clusters,Canon EOS REBEL T5i,800,480.3 sec,f/inf,0.0 mm
-Star,Canon EOS 5D Mark III,6400,16.0 sec,f/2.8,24.0 mm
-Star_clusters,Canon EOS REBEL T5i,800,480.3 sec,f/inf,0.0 mm
+Object,ISO_Speed,Shutter,Aperture
+Star_Clusters,800,480.3 sec,f/inf
+Star,6400,16.0 sec,f/2.8
+Star_Clusters,800,480.3 sec,f/inf
+Star_Clusters,800,480.3 sec,f/2.0
+Star_Clusters,1600,30.0 sec,f/0.0
+Star_Clusters,800,480.3 sec,f/inf
+Star_Clusters,1600,30.0 sec,f/0.0
+Star,1600,30.0 sec,f/0.0
+Star_Clusters,800,177.0 sec,f/2.2

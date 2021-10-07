@@ -196,7 +196,7 @@ def compute_homography(next_image, base_image, frame_num = 0, cache = None):
     matches = matcher.match(des1, des2, None)
 
     # Sort matches by score
-    matches.sort(key=lambda x: x.distance, reverse=False)
+    matches = sorted(matches, key=lambda x: x.distance, reverse=False)
 
     # Remove not so good matches
     numGoodMatches = int(len(matches) * GOOD_MATCH_PERCENT)

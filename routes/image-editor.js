@@ -24,7 +24,23 @@ router.get('/', global.authenticationMiddleware(), function(req, res, next) {
 /* GET TUI image editor. */
 router.post('/get-tui', global.authenticationMiddleware(), function(req, res, next) {
     console.log(req.body.photo);
-    res.render('tui', { image: req.body.photo, userId: req.user._id });
+    var picture;
+    if((req.body.photo).includes('.tiff'))
+    {
+        picture = (req.body.photo).replace('.tiff','');
+    }
+    else
+    {
+        if((req.body.photo).includes('.jpg'))
+        {
+            picture = (req.body.photo).replace('.jpg','');
+        }
+        else
+        {
+            picture = (req.body.photo).replace('.png','');
+        }
+    }
+    res.render('tui', { image: picture, userId: req.user._id, user: req.user.username });
 });
 
 module.exports = router;

@@ -50,9 +50,10 @@ router.post('/m-next', global.authenticationMiddleware(), function(req, res, nex
         buf = fs.readFileSync(rawFileDir);
         // Get the RAW metadata
         var metadata = dcraw(buf, { verbose: true, identify: true }).split('\n').filter(String);
+        console.log(metadata);
         cameraInfo = [];
-        cameraInfo.push(req.body.category, metadata[2].substr(8), metadata[3].substr(11),
-                    metadata[4].substr(9), metadata[5].substr(10), metadata[6].substr(14));
+        cameraInfo.push(req.body.category, metadata[3].substr(11),
+                    metadata[4].substr(9), metadata[5].substr(10));
         //render a-next page
         res.render('m-next', { photos: photos, user: req.user.username});
     });
@@ -137,7 +138,7 @@ router.delete('/discard/:image', global.authenticationMiddleware(), (req, res) =
         }
         console.log(`${previewImg} preview has been deleted!`);
     });
-    var processedDir = [(process.env.PHOTO_DIR), req.user._id, "/", req.params.image, photoFormat].join('');
+    var processedDir = [(process.env.PHOTO_DIR), req.user._id, "/", req.params.image,  paramsUsed[15]].join('');
     fs.unlink(processedDir, (err) => {
         if (err) {
             throw err;
@@ -184,11 +185,9 @@ router.get('/save', global.authenticationMiddleware(), async(req, res) => {
     
     var rawInfo = [{
         Object: cameraInfo[0].toString(),
-        Camera: cameraInfo[1].toString(),
-        Speed: cameraInfo[2].toString(),
-        Shutter: cameraInfo[3].toString(),
-        Aperture: cameraInfo[4].toString(),
-        Focal_Length: cameraInfo[5].toString()
+        ISO_Speed: cameraInfo[1].toString(),
+        Shutter: cameraInfo[2].toString(),
+        Aperture: cameraInfo[3].toString()
     }];
     var raw_csv = new ObjectsToCsv(rawInfo);
     await raw_csv.toDisk((process.env.CAMCSV_DIR), { append: true });

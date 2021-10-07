@@ -243,12 +243,21 @@
   font-weight: 500;
   margin: 18px
 }
-img {
-  max-width: 100%;
-  height: auto;
+.flex-container {
+  display: flex;
+  flex-wrap: wrap;
+  text-align: left;
+}
+.flex-item {
+  color: white;
+  padding: 10px;
+  flex: 25%;
 }
 @media (max-width: 420px) {
-  .sidebar li .tooltip img{
+  .sidebar li .tooltip{
     display: none;
+  }
+  .flex-container {
+    flex-direction: column;
   }
 }

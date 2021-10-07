@@ -151,7 +151,8 @@
             <fieldset id="thr">
               <input type="text" name="thr" value="0.85" placeholder="0.85" class="mytext">
             </fieldset>
-            <br>
+          </div>
+          <div class="flex-item-2">
             <p>Use a Dark Frame:</p>
             <fieldset id="darkFrame">
               <input type="radio" value="Yes" name="darkFrame">
@@ -205,14 +206,13 @@
                 <% } %>
               </select>
             </fieldset>
-          </div>
-          <div class="flex-item-2">
+            <br>
             <p>Output Name:</p>
             <fieldset id="outputName">
               <input type="text" name="outputName" value="My-Processed-Photo" placeholder="My-Processed-Photo">
             </fieldset>
             <br>
-            <p>Image Format</p>
+            <p>Image Format:</p>
             <fieldset>
               <select name="imageFormat" id="imageFormat">
                 <option value=".tiff" selected>TIFF</option>
@@ -221,7 +221,7 @@
               </select>
             </fieldset>
             <br> 
-            <p>Gamma</p>
+            <p>Gamma:</p>
             <fieldset>
               <select name="gamma" id="gamma">
                 <option value="linear" selected>Linear</option>
@@ -237,15 +237,16 @@
               <label for="noAutoScale">No</label>
             </fieldset>
             <br>
-            <p>No Auto Bright</p>
+            <p>No Auto Bright:</p>
             <fieldset id="noAutoBright">
               <input type="radio" value="Yes" name="noAutoBright" checked>
               <label for="noAutoBright">Yes</label>
               <input type="radio" value="No" name="noAutoBright">
               <label for="noAutoBright">No</label>
             </fieldset>
-            <br>
-            <p>Output bps</p>
+          </div>
+          <div class="flex-item-3">
+            <p>Output bps:</p>
             <fieldset id="outputBPS">
               <input type="radio" value="8" name="outputBPS">
               <label for="outputBPS">8</label>
@@ -253,15 +254,7 @@
               <label for="outputBPS">16</label>
             </fieldset>
             <br>
-            <p>No Auto Bright</p>
-            <fieldset id="noAutoBright">
-              <input type="radio" value="Yes" name="noAutoBright" checked>
-              <label for="noAutoBright">Yes</label>
-              <input type="radio" value="No" name="noAutoBright">
-              <label for="noAutoBright">No</label>
-            </fieldset>
-            <br>
-            <p>Use Camera White Balance</p>
+            <p>Use Camera White Balance:</p>
             <fieldset id="cameraWB">
               <input type="radio" value="Yes" name="cameraWB">
               <label for="cameraWB">Yes</label>
@@ -277,7 +270,7 @@
               <label for="autoWB">No</label>
             </fieldset>
             <br>
-            <p>Color Space</p>
+            <p>Color Space:</p>
             <fieldset>
               <select name="colorSpace" id="colorSpace">
                 <option value="2">Adobe</option>
@@ -287,10 +280,9 @@
                 <option value="0">raw</option>
                 <option value="1" selected>sRGB</option>
               </select>
-            </fieldset> 
-          </div>
-          <div class="flex-item-3">
-            <p>Demosaic Algorithm</p>
+            </fieldset>
+            <br>
+            <p>Demosaic Algorithm:</p>
             <fieldset>
               <select name="demosaicAlgorithm" id="demosaicAlgorithm">
                 <option value="12">AAHD</option>
@@ -330,7 +322,8 @@
             <fieldset id="dcbIterations">
               <input type="text" name="dcbIterations" value="0" placeholder="0" class="mytext">
             </fieldset>
-            <br>
+          </div>
+          <div class="flex-item-4">
             <p>Half Size:</p>
             <fieldset id="halfSize">
               <input type="radio" value="Yes" name="halfSize">
@@ -363,14 +356,11 @@
                 <option value="1">Ignore</option>
                 <option value="5" selected>Default</option>
               </select>
-            </fieldset> 
-          </div>
-          <div class="flex-item-4">
-           
-          </div>
+            </fieldset>
+            <br>
             <button type="submit" onclick="hideElement()">Process</button>
-          </div> 
-        </div>
+          </div>
+        </div> 
       </form>
       <div class="demo-container">
         <h5 style="color:aliceblue">Please Wait...</h5>
