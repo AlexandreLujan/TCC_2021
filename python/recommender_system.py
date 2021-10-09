@@ -2,19 +2,32 @@ import sys
 import pandas as pd
 import numpy as np
 
-n = None
+n, s = None, None
 
+def get_recommendation(index):
+	#read Argumments.csv
+	argumments = pd.read_csv('/home/alexandre/TCC_2021/database/Argumments.csv')
+
+	#get row by the index
+	row=argumments.iloc[index]
+
+	#save the values
+	param=row.values.tolist()
+
+	#the print return the list to node js
+	print(param)
+
+#calculate the Euclidean distance using the Pythagorean theorem
 def dist(x):
-	global n
-	return np.linalg.norm(x-[float(sys.argv[2]), float(sys.argv[3]), float(n)])
+	global n, s
+	return np.linalg.norm(x-[float(sys.argv[2]), float(s), float(n)])
 
 def main():
-	global n
+	global n, s
 
-	#read csv
-	camera=pd.read_csv('../database/Camera.csv')
-	argumments = pd.read_csv('../database/Argumments.csv')
-	
+	#read Camera.csv
+	camera=pd.read_csv('/home/alexandre/TCC_2021/database/Camera.csv')
+		
 	#discard rows diferent than sys.argv[1] (astronomy object)
 	camera = camera.loc[(camera['Object'] == str(sys.argv[1]))]
 
@@ -59,14 +72,24 @@ def main():
 	#convert the data to a float matrix
 	camera = camera.astype(float)
 
+	#remove ' sec' from sys.argv[3]
+	aux1 = str(sys.argv[3])
+	s = aux1.replace(' sec', '')
+ 
 	#get distancy value from input
 	camera['Dist']=camera.apply(dist, axis=1)
-	print(camera)
-	camera['Sort']=camera.sort_values(by='Dist', ascending=True)
-	print(camera.sort_values(by='Dist', ascending=True))
 
+	#sort matrix by Dist column
+	camera.sort_values(["Dist"], axis=0, ascending=[True], inplace=True)
+
+	#get the index of first row
+	index=camera.head(1).index[0]
+
+	#call the recommedation function
+	get_recommendation(index)
+	
 # main
 if __name__ == '__main__':
-    print("This is the name of the program:", sys.argv[0])
-    print("Argument List:", str(sys.argv))
+    #print("This is the name of the program:", sys.argv[0])
+    #print("Argument List:", str(sys.argv))
     main()

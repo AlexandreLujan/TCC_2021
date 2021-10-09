@@ -151,11 +151,6 @@ router.delete('/discard/:image', global.authenticationMiddleware(), (req, res) =
 /* SAVE photo and CSV arguments (photo already saved) */
 router.get('/save', global.authenticationMiddleware(), async(req, res) => {
     var list = [{
-        Object: cameraInfo[0].toString(),
-        Base: paramsUsed[0].toString(), 
-        Dark: paramsUsed[8].toString(),
-        Flat: paramsUsed[10].toString(), 
-        Mask: paramsUsed[12].toString(), 
         Align: paramsUsed[2].toString(), 
         Cache: paramsUsed[3].toString(),
         Raw: paramsUsed[4].toString(), 
